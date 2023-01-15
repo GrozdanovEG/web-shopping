@@ -16,10 +16,10 @@ class Database implements Storage {
     {
         try {
             return new PDO($this->databaseData->generatePdoDsn('mysql'),
-                $this->databaseData->username(), $this->databaseData->password());
+                           $this->databaseData->username(), $this->databaseData->password());
         } catch (\Throwable $throwable) {
             echo 'Something went wrong. Check your input and/or try again later!';
-            error_log('Error occurred: '.$throwable->getMessage() . PHP_EOL)
+            error_log('Error occurred: '.$throwable->getMessage() . PHP_EOL);
             return false;
         }
     }
@@ -38,7 +38,7 @@ class Database implements Storage {
 
     public function disconnect(): bool|null
     {
-        
+        return true;
     }
 }
 
