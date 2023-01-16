@@ -2,8 +2,6 @@
 declare(strict_types=1);
 namespace WebShoppingApp\DataFlow;
 
-use WebShoppingApp\DataFlow\InputData;
-
 class UserInput implements InputData
 {
     /** @var InputField[]  */
@@ -18,14 +16,15 @@ class UserInput implements InputData
     /** @return InputField[]  */
     public function returnPostInputs(): array
     {
-        return array_filter($this->getInputs(),
-                            function($i) {return $i->method() === 'post';});
+        return array_filter( $this->getInputs(),
+                             function($item):bool { return $item->method() === 'post'; } );
     }
 
     /** @return InputField[]  */
     public function returnGetInputs(): array
     {
-        return array_filter($this->getInputs(), function($i) {return $i->method() === 'get';});
+        return array_filter( $this->getInputs(),
+                             function($item):bool { return $item->method() === 'get'; } );
     }
 
     private function collectInputs(string $type): void

@@ -11,39 +11,25 @@ echo '        <h1>Web Shopping App</h1>';
 
 require_once __DIR__ . '/../storage/DbData.php';
 $databaseData = new DatabaseData($dbData);
-$pdoDB = new PDO($databaseData->generatePdoDsn('mysql'),
-                 $databaseData->username(), $databaseData->password());
+try {
+    $pdoDB = new PDO($databaseData->generatePdoDsn('mysql'),
+        $databaseData->username(), $databaseData->password());
+} catch (Exception $ex) {
+    echo 'Oooops! Something unexpected happened. Try Again later!';
+}
 
-?>
+include __DIR__ . '/templates/add-product-form.html';
+$userInput = new UserInput();  //$userInput = (new UserInput)->returnPostInputs();
 
-<form action="/?action=add-product" method="post" name="product">
-    <label>Product Name:
-        <input type="text" name="name" size="20">
-    </label>
-    <label>Product description :
-        <input type="text" name="description" size="40">
-    </label>
-    <label>Product price :
-        <input type="text" name="price" size="6">
-    </label>
-    <label>Quantity :
-        <input type="text" name="quantity" size="6">
-    </label>
-    <input type="submit" name="send-button" value="send">
-</form>
-<?php
-$userInput = new UserInput();
-//$userInput = (new UserInput)->returnPostInputs();
-//$userInput = (new UserInput)->returnGetInputs();
 
-use WebShoppingApp\Model\Product;
+use WebShoppingApp\Model\{Product,Order,Cart};
 
 
 echo '<pre>';
 //var_dump($userInput); exit;
 
-$product = Product::createFromInputData($userInput->getInputs());
-print_r($product);
+$item = Cart::createFromInputData($userInput);
+print_r($item);
 echo '</pre>';
 
 echo '<hr>';

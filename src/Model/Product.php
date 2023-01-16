@@ -1,9 +1,9 @@
 <?php
-//declare(strict_types=1);
+declare(strict_types=1);
 namespace WebShoppingApp\Model;
 
 use WebShoppingApp\DataFlow\InputField;
-use WebShoppingApp\DataFlow\UserInput;
+use WebShoppingApp\DataFlow\InputData;
 
 class Product
 {
@@ -27,13 +27,15 @@ class Product
     /** @param InputField[]
      *  @return Product
      */
-    public static function createFromInputData(array $inputData): self
+    public static function createFromInputData(InputData $inputData): self
     {
-        $id = isset($inputData['id']) ? $inputData['id']->value(): uniqid('P#', true);
-        $name = isset($inputData['name']) ? $inputData['name']->value(): '';
-        $description = isset($inputData['description']) ? $inputData['description']->value(): '';
-        $price = isset($inputData['price']) ? $inputData['price']->value(): 0.0;
-        $quantity = isset($inputData['quantity']) ? $inputData['quantity']->value(): 0;
+        /** @var $idArr = InputField[] */
+        $idArr = $inputData->getInputs();
+        $id = isset($idArr['id']) ? $idArr['id']->value(): uniqid('ProdNu', true);
+        $name = isset($idArr['name']) ? $idArr['name']->value(): '';
+        $description = isset($idArr['description']) ? $idArr['description']->value(): '';
+        $price = (float)(isset($idArr['price']) ? $idArr['price']->value(): 0.0);
+        $quantity = (int)(isset($idArr['quantity']) ? $idArr['quantity']->value(): 0);
         return new Product($id, $name, $description, $price, $quantity);
     }
 
@@ -67,7 +69,7 @@ class Product
         return $this->visibility;
     }
 
-    public function hide(): void
+    public function hideItem(): void
     {
          if ($this->visibility > 0 ) $this->visibility = 0;
     }

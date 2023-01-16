@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace WebShoppingApp\DataFlow;
 
 class InputField
@@ -31,10 +31,12 @@ class InputField
     /* Protected access for values modification */
     protected function setMethod(string $method): void
     {
+        // @todo possible internal validation
         $this->method = $method;
     }
     protected function setValue(mixed $value): void
     {
+        // @todo possible internal validation
         $this->value = $value;
     }
 }
