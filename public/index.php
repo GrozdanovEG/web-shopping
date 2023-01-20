@@ -21,14 +21,13 @@ try {
 include __DIR__ . '/templates/add-product-form.html';
 $userInput = new UserInput();  //$userInput = (new UserInput)->returnPostInputs();
 
-
-use WebShoppingApp\Model\{Product,Order,Cart};
+use WebShoppingApp\Model\{ProductFactory,OrderFactory,CartFactory};
 
 
 echo '<pre>';
 //var_dump($userInput); exit;
 
-$item = Cart::createFromInputData($userInput);
+$item = ProductFactory::createFromInputData($userInput);
 print_r($item);
 echo '</pre>';
 

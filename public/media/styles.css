@@ -1,0 +1,70 @@
+/* GLOABAL */
+html, body, * {
+    background-color: whitesmoke;
+    box-sizing: border-box;
+    font-family: monospace;
+    font-size: max(1.35vw,9pt);
+    text-align: left;
+    font-family: monospace;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: serif;
+    text-align: center;
+}
+h1 {font-size: 175%;}
+h2 {font-size: 150%;}
+h3 {font-size: 140%;}
+h4 {font-size: 130%;}
+h5 {font-size: 120%;}
+h6 {font-size: 105%;}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+form {
+    background-color: aliceblue;
+    width: 50em;
+    margin: auto;
+    padding: 1.5em;
+    border: 0pt dotted red;
+    border-radius: 2vw;
+}
+form, form > * {
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+}
+
+label,
+input,
+select {
+    background-color: inherit;
+    display: inline;
+    font-size: 95%;
+    width: 9em;
+    margin: 1vw;
+    border-radius: 8px;
+}
+label {
+    width: 45em;
+}
+input.button {
+    background-color: rgb(134,134,211);
+}
+input:focus,
+select:focus {
+    background-color: rgba(244, 244, 24, 0.8);
+}
+
+option:focus {
+    color: blue;
+}
+/* GLOABAL  ENDS */

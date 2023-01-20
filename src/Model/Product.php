@@ -24,20 +24,7 @@ class Product
         $this->quantity = $quantity;
     }
 
-    /** @param InputField[]
-     *  @return Product
-     */
-    public static function createFromInputData(InputData $inputData): self
-    {
-        /** @var $idArr = InputField[] */
-        $idArr = $inputData->getInputs();
-        $id = isset($idArr['id']) ? $idArr['id']->value(): uniqid('ProdNu', true);
-        $name = isset($idArr['name']) ? $idArr['name']->value(): '';
-        $description = isset($idArr['description']) ? $idArr['description']->value(): '';
-        $price = (float)(isset($idArr['price']) ? $idArr['price']->value(): 0.0);
-        $quantity = (int)(isset($idArr['quantity']) ? $idArr['quantity']->value(): 0);
-        return new Product($id, $name, $description, $price, $quantity);
-    }
+
 
     public function id(): string
     {
