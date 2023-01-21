@@ -29,7 +29,7 @@ ul {
 
 form {
     background-color: aliceblue;
-    width: 50em;
+    width: 45%;
     margin: auto;
     padding: 1.5em;
     border: 0pt dotted red;
@@ -68,3 +68,26 @@ option:focus {
     color: blue;
 }
 /* GLOABAL  ENDS */
+
+/* Table styles */
+table {
+    width: 80%;
+    max-width: 900px !important;
+    margin: auto;
+}
+table, tr, th, td {
+    border: 1px solid green;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+table form {
+   width: 20em;
+}
+table form button {
+    padding: 4px 16pt;
+    margin: 0 10pt;
+    border-radius: 12px;
+    background-color: aquamarine;
+}
+/* Table styles end */

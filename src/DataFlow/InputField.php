@@ -18,7 +18,7 @@ class InputField
         return $this->method;
     }
 
-    public function value(): string
+    public function value(): mixed
     {
         return $this->value;
     }

@@ -2,16 +2,16 @@
 declare(strict_types=1);
 namespace WebShoppingApp\Model;
 
-use WebShoppingApp\DataFlow\InputField;
-use WebShoppingApp\DataFlow\InputData;
+use WebShoppingApp\View\HtmlOutput;
+use WebShoppingApp\View\ListableItem;
 
-class Product
+class Product extends ListableItem
 {
-    private string $id;
-    private string $name;
-    private string $description;
-    private float $price;
-    private int $quantity;
+    protected string $id;
+    protected string $name;
+    protected string $description;
+    protected float $price;
+    protected int $quantity;
     private int $visibility = 1;
 
     public function __construct(string $id, string $name,
@@ -57,5 +57,10 @@ class Product
     public function hideItem(): void
     {
          if ($this->visibility > 0 ) $this->visibility = 0;
+    }
+
+    public function __toString(): string
+    {
+        return "[{$this->id()}]|  {$this->name()}: {$this->description()}|  &dollar;{$this->price()}|   Qty: {$this->quantity()}| ";
     }
 }

@@ -2,15 +2,15 @@
 declare(strict_types=1);
 namespace WebShoppingApp\Controller;
 
-use WebShoppingApp\DataFlow\InputData;
-use WebShoppingApp\Storage\{StorageData,DatabaseData};
+use WebShoppingApp\DataFlow\{InputData,UserInput};
 use WebShoppingApp\Model\ProductFactory;
 use WebShoppingApp\Model\ProductStorageByPDO;
 use WebShoppingApp\Storage\Database;
+use WebShoppingApp\Storage\DatabaseData;
+use WebShoppingApp\Storage\StorageData;
 
-class AddProductToPriceListController implements ActionsController
+class UpdateProductFromPriceListController implements ActionsController
 {
-
     public function __construct() //(Storage $storage)
     {
         //$this->storage = $storage;
@@ -18,7 +18,7 @@ class AddProductToPriceListController implements ActionsController
 
     public function canHandle(string $action): bool
     {
-        return ($action === 'add_product');
+        return ($action === 'update_product');
     }
 
     public function handle(InputData $inputData): array
@@ -27,8 +27,10 @@ class AddProductToPriceListController implements ActionsController
         try {
             $databaseData = new DatabaseData((new StorageData())->dbData());
             $productStorage = new ProductStorageByPDO(new Database($databaseData));
-            $productStorage->store($product);
-            echo 'A new product stored into the catalog';
+            $productId = $inputData->getInputs()['id']->value();
+            $product = $productStorage->findById($productId);
+            echo "<h2>The product {$product->name()} can be modified</h2>";
+            require_once __DIR__ . '/../View/templates/update-product-form.php';
         } catch (Exception $ex) {
             echo 'Oooops! Something unexpected happened. Try Again later!';
             echo '<div>{$ex->getMessage()}</div>';

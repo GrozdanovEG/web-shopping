@@ -4,6 +4,7 @@ namespace WebShoppingApp\Model;
 
 use PDO;
 use WebShoppingApp\Storage\Connectable;
+use WebShoppingApp\DataFlow\{StorageInput,InputData};
 
 class ProductStorageByPDO implements ProductStorage
 {
@@ -38,15 +39,13 @@ class ProductStorageByPDO implements ProductStorage
             'description' => $product->description(),
             'price' => $product->price(),
             'quantity' => $product->quantity()
+
         ];
 
         // Building query  @todo separating the logic outside the class
-        $query =<<<QUERY
-        INSERT INTO products
-          (id, name, description, price, quantity)
-          VALUES
-          (:id, :name, :description, :price, :quantity)
-        QUERY;
+        $qBuilder = new ProductQueryBuilder($product);
+        $query = $qBuilder->modifyQueryMode('insert')->build();
+
         $statement = $this->pdoConnection->prepare($query);
         if ( $statement->execute($parameters) )
             return $product;
@@ -60,9 +59,29 @@ class ProductStorageByPDO implements ProductStorage
         return false;
     }
 
+    public function findById(string $id): ?Product
+    {
+        $query = "SELECT * FROM products WHERE id = :id AND visibility > 0";
+        $statement = $this->pdoConnection->prepare($query);
+        $statement->execute(['id' => $id]);
+        $statement->setFetchMode(PDO::FETCH_ASSOC);
+        $result= $statement->fetch();
+        $storageInput = new StorageInput($result);
+        return (ProductFactory::createFromInputData($storageInput) ?? null);
+    }
+
     /** @return Product[] */
     public function fetchAll(): array
     {
-
+        $query = "SELECT * FROM products WHERE visibility > 0";
+        $statement = $this->pdoConnection->query($query);
+        $statement->setFetchMode(PDO::FETCH_ASSOC);
+        $results = $statement->fetchAll();
+        $products = [];
+        foreach ($results as $result) {
+            $storageInput = new StorageInput($result);
+            $products[] = ProductFactory::createFromInputData($storageInput);
+        }
+        return $products;
     }
 }
