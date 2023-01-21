@@ -2,8 +2,7 @@
 
 namespace WebShoppingApp\Storage;
 
-interface Storage
+abstract class Storage
 {
-    /** @return PDO|MYSQLI */
-    public function connect(): mixed;
+    protected mixed $storageData;
 }

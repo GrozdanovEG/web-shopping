@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 
+namespace WebShoppingApp\Controller;
+
 use WebShoppingApp\DataFlow\InputData;
 
-interface Controller
+interface ActionsController
 {
     /**
      * @param string $action

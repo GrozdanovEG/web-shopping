@@ -1,39 +1,29 @@
 <?php
-//declare(strict_types=1);
+declare(strict_types=1);
 session_start();
 
 require_once __DIR__ . '/../vendor/autoload.php';
-use \WebShoppingApp\Storage\DatabaseData;
-use \WebShoppingApp\DataFlow\UserInput;
-
 include __DIR__ . '/../src/View/header.html';
-echo '        <h1>Web Shopping App</h1>';
-
-require_once __DIR__ . '/../storage/DbData.php';
-$databaseData = new DatabaseData($dbData);
-try {
-    $pdoDB = new PDO($databaseData->generatePdoDsn('mysql'),
-        $databaseData->username(), $databaseData->password());
-} catch (Exception $ex) {
-    echo 'Oooops! Something unexpected happened. Try Again later!';
-}
-
 include __DIR__ . '/templates/add-product-form.html';
-$userInput = new UserInput();  //$userInput = (new UserInput)->returnPostInputs();
 
-use WebShoppingApp\Model\{ProductFactory,OrderFactory,CartFactory};
 
+use WebShoppingApp\DataFlow\UserInput;
+use WebShoppingApp\DataFlow\InputData;
+$userInput = new UserInput();
+$inputData = $userInput->getInputs();
 
 echo '<pre>';
-//var_dump($userInput); exit;
+//var_dump($userInput);
+//exit;
 
-$item = ProductFactory::createFromInputData($userInput);
-print_r($item);
+
+use WebShoppingApp\Controller\AddProductToPriceListController;
+if (isset($inputData['action']) && $inputData['action']->value() === 'add_product') {
+    (new AddProductToPriceListController())->handle($userInput);
+}
+
+
 echo '</pre>';
-
 echo '<hr>';
-
-
-
 include __DIR__ . '/../src/View/footer.html';
 

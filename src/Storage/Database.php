@@ -3,24 +3,26 @@ declare(strict_types=1);
 
 namespace WebShoppingApp\Storage;
 
-class Database implements Storage {
+use PDO;
+// use WebShoppingApp\Storage\Connectable;
 
-    private DatabaseData $databaseData;
+class Database extends Storage implements Connectable {
 
-    public function __construct(DatabaseData $databaseData)
+    public function __construct(DatabaseData $dbData)
     {
-        $this->databaseData = $databaseData;
+        $this->storageData = $dbData;
     }
 
-    public function connect(): \PDO|false
+    /** @return PDO|null */
+    public function connect(string $dbDriver): mixed
     {
         try {
-            return new PDO($this->databaseData->generatePdoDsn('mysql'),
-                           $this->databaseData->username(), $this->databaseData->password());
+            return new PDO($this->storageData->generatePdoDsn($dbDriver),
+                           $this->storageData->username(), $this->storageData->password());
         } catch (\Throwable $throwable) {
-            echo 'Something went wrong. Check your input and/or try again later!';
+            echo '<div>Something went wrong. Check your input and/or try again later!</div>';
             error_log('Error occurred: '.$throwable->getMessage() . PHP_EOL);
-            return false;
+            return null;
         }
     }
 

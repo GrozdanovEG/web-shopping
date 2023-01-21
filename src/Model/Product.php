@@ -24,8 +24,6 @@ class Product
         $this->quantity = $quantity;
     }
 
-
-
     public function id(): string
     {
         return $this->id;
