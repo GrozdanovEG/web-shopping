@@ -16,11 +16,14 @@ $inputData = $userInput->getInputs();
 use WebShoppingApp\Controller\AddProductToPriceListController;
 use WebShoppingApp\Controller\FetchProductsFromPriceListController;
 use WebShoppingApp\Controller\UpdateProductFromPriceListController;
+use WebShoppingApp\Controller\DeleteProductFromPriceListController;
 
 if (isset($inputData['action']) && $inputData['action']->value() === 'add_product') {
     (new AddProductToPriceListController())->handle($userInput);
 } elseif (isset($inputData['action']) && $inputData['action']->value() === 'update_product') {
     (new UpdateProductFromPriceListController())->handle($userInput);
+} elseif (isset($inputData['action']) && $inputData['action']->value() === 'remove_product') {
+    (new DeleteProductFromPriceListController())->handle($userInput);
 } else {
     $priceListProducts = (new FetchProductsFromPriceListController())->handle($userInput);
     echo '<table>' . PHP_EOL;

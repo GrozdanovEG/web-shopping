@@ -24,6 +24,8 @@ class ProductQueryBuilder
     {
         $query['select'] = 'SELECT * FROM products WHERE visibility > 0';
 
+        $query['select-item-by-id'] = 'SELECT * FROM products WHERE id = :id AND visibility > 0';
+
         $query['insert'] ='INSERT INTO products (id, name, description, price, quantity)
                            VALUES (:id, :name, :description, :price, :quantity)';
 

@@ -5,6 +5,7 @@ namespace WebShoppingApp\Model;
 use PDO;
 use WebShoppingApp\Storage\Connectable;
 use WebShoppingApp\DataFlow\{StorageInput,InputData};
+use WebShoppingApp\Storage\Database;
 
 class ProductStorageByPDO implements ProductStorage
 {
@@ -31,35 +32,51 @@ class ProductStorageByPDO implements ProductStorage
         $this->pdoConnection = $this->connectable->connect($this->dbDriverName);
     }
 
-    public function store(Product $product): Product|false
+    public function store(Product $product, ?InputData $inputData): Product|false
     {
+        $productFromInputData = ProductFactory::createFromInputData($inputData);
+        $p = $productFromInputData;
         $parameters = [
-            'id' => $product->id(),
-            'name' => $product->name(),
-            'description' => $product->description(),
-            'price' => $product->price(),
-            'quantity' => $product->quantity()
-
+            'id' => $p->id() ?? $product->id(),
+            'name' => $p->name() ?? $product->name(),
+            'description' => $p->description() ?? $product->description(),
+            'price' => $p->price() ?? $product->price(),
+            'quantity' => $p->quantity() ?? $product->quantity()
         ];
-
-        // Building query  @todo separating the logic outside the class
         $qBuilder = new ProductQueryBuilder($product);
-        $query = $qBuilder->modifyQueryMode('insert')->build();
+
+        if ( $product->id() === $productFromInputData->id() ) {
+            $query = $qBuilder->modifyQueryMode('update')->build();
+        } else {
+            $query = $qBuilder->modifyQueryMode('insert')->build();
+        }
 
         $statement = $this->pdoConnection->prepare($query);
-        if ( $statement->execute($parameters) )
-            return $product;
-
+        if ( $statement->execute($parameters) ) {
+            echo "The operation with {$p} was successful";
+            return $p;
+        }
         return false;
     }
 
     public function remove(Product $product): Product|false
     {
-
+        $parameters = [
+                        'id' => $product->id(),
+                        'visibility' => $product->visibility()
+                      ];
+        $qBuilder = new ProductQueryBuilder($product);
+        $query = $qBuilder->modifyQueryMode('delete')->build();
+        $statement = $this->pdoConnection->prepare($query);
+        if ( $statement->execute($parameters) ) {
+            echo "The operation with {$product} was successful";
+            return $product;
+        }
         return false;
     }
 
-    public function findById(string $id): ?Product
+    /** @return Product */
+    public function findById(string $id): Product
     {
         $query = "SELECT * FROM products WHERE id = :id AND visibility > 0";
         $statement = $this->pdoConnection->prepare($query);
@@ -67,7 +84,7 @@ class ProductStorageByPDO implements ProductStorage
         $statement->setFetchMode(PDO::FETCH_ASSOC);
         $result= $statement->fetch();
         $storageInput = new StorageInput($result);
-        return (ProductFactory::createFromInputData($storageInput) ?? null);
+        return (ProductFactory::createFromInputData($storageInput));
     }
 
     /** @return Product[] */
