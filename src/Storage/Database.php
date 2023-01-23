@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WebShoppingApp\Storage;
 
 use PDO;
-// use WebShoppingApp\Storage\Connectable;
 
 class Database extends Storage implements Connectable {
 
@@ -20,7 +19,7 @@ class Database extends Storage implements Connectable {
             return new PDO($this->storageData->generatePdoDsn($dbDriver),
                            $this->storageData->username(), $this->storageData->password());
         } catch (\Throwable $throwable) {
-            echo '<div>Something went wrong. Check your input and/or try again later!</div>';
+            echo '<div class="message failure">Something went wrong. Check your input and/or try again later!</div>';
             error_log('Error occurred: '.$throwable->getMessage() . PHP_EOL);
             return null;
         }

@@ -10,6 +10,6 @@ class ListableItem implements Listable
      */
     public function render(): string|null
     {
-        return (new HtmlOutput($this))->toTableView();
+        return (new HtmlOutput($this))->toTableRowView();
     }
 }

@@ -4,12 +4,10 @@ namespace WebShoppingApp\Model;
 
 use WebShoppingApp\DataFlow\InputData;
 use WebShoppingApp\DataFlow\InputField;
-use WebShoppingApp\Model\Product;
 
 class ProductFactory
 {
     //public function __construct() {}
-
     /** @param InputField[]
      *  @return Product
      */

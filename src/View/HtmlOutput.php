@@ -17,14 +17,15 @@ class HtmlOutput extends Output
         return '<li>'.$listItem.'</li>';
     }
 
-    public function toTableView(): string
+    public function toTableRowView(): string
     {
+        /** @todo  To be moved to ProductHtmlOutput specific class */
         $form = (new ApplicationOutputFormatter())->productButtonsGenerator($this->entity);
-        $tableOutput = "  <td class=\"front-cell\">{$form}</td>".PHP_EOL;
-        $tableOutput .= "  <td>{$this->entity->name()}</td>".PHP_EOL;
-        $tableOutput .= "  <td>{$this->entity->description()}</td>".PHP_EOL;
-        $tableOutput .= "  <td>&dollar;{$this->entity->price()}</td>".PHP_EOL;
-        $tableOutput .= "  <td>{$this->entity->quantity()}</td>".PHP_EOL;
-        return '<tr>' . PHP_EOL . $tableOutput . PHP_EOL. '</tr>' . PHP_EOL;
+        $tableRowOutput = "  <td>{$form}</td>".PHP_EOL;
+        $tableRowOutput .= "  <td>{$this->entity->name()}</td>".PHP_EOL;
+        $tableRowOutput .= "  <td>{$this->entity->description()}</td>".PHP_EOL;
+        $tableRowOutput .= "  <td>&dollar;{$this->entity->price()}</td>".PHP_EOL;
+        $tableRowOutput .= "  <td>{$this->entity->quantity()}</td>".PHP_EOL;
+        return '<tr>' . PHP_EOL . $tableRowOutput . PHP_EOL. '</tr>' . PHP_EOL;
     }
 }

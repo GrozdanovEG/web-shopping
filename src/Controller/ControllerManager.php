@@ -18,7 +18,8 @@ final class ControllerManager
 
     public function handle(InputData $inputData): array
     {
-        $action = $inputData->getInputs()['action']?->value() ?? '';
+        $inputFields = $inputData->getInputs();
+        $action = isset($inputFields['action']) ? $inputFields['action']?->value() : '';
         foreach ($this->controllers as $controller) {
             if ($controller->canHandle($action)) {
                 return $controller->handle($inputData);

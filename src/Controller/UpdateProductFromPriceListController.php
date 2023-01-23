@@ -32,10 +32,9 @@ class UpdateProductFromPriceListController implements ActionsController
             // @todo to be moved to View layer
                 echo "<h2>The product {$product->name()} can be/has been modified</h2>";
                 require_once __DIR__ . '/../View/templates/update-product-form.php';
-
             $productStorage->store($product, $inputData);
         } catch (Exception $ex) {
-            // @todo implementing handling messages logic
+            // @todo implementing handling messages/errors logic
             echo '<div class="message failure">Oooops! Something unexpected happened. Try Again later!</div>';
             error_log($ex->getMessage());
         }

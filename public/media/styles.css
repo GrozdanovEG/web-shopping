@@ -29,7 +29,7 @@ ul {
 
 form {
     background-color: aliceblue;
-    width: 45%;
+    width: 50%;
     margin: auto;
     padding: 1.5em;
     border: 0pt dotted red;
@@ -103,7 +103,7 @@ table form button {
 .footer {
     width: 98%;
     font-size: 85%;
-    color: rgb(96,96,232);
+    color: rgb(32,32,144);
     margin: 8pt;
 }
 .footer > * {

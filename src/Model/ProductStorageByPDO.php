@@ -59,6 +59,9 @@ class ProductStorageByPDO implements ProductStorage
         return false;
     }
 
+    /** @param Product $product
+     *  @return Product|false
+     */
     public function remove(Product $product): Product|false
     {
         $parameters = [
@@ -75,7 +78,8 @@ class ProductStorageByPDO implements ProductStorage
         return false;
     }
 
-    /** @return Product */
+    /** @param string $id
+     *  @return Product    */
     public function findById(string $id): Product
     {
         $query = "SELECT * FROM products WHERE id = :id AND visibility > 0";
