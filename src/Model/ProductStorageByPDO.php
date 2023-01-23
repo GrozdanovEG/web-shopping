@@ -53,7 +53,7 @@ class ProductStorageByPDO implements ProductStorage
 
         $statement = $this->pdoConnection->prepare($query);
         if ( $statement->execute($parameters) ) {
-            echo "The operation with {$p} was successful";
+            echo "<div class=\"message success\">The operation with {$p->name()} was successful</div>";
             return $p;
         }
         return false;
@@ -69,7 +69,7 @@ class ProductStorageByPDO implements ProductStorage
         $query = $qBuilder->modifyQueryMode('delete')->build();
         $statement = $this->pdoConnection->prepare($query);
         if ( $statement->execute($parameters) ) {
-            echo "The operation with {$product} was successful";
+            echo "<div class=\"message success\">{$product->name()} was successfully removed</div>";
             return $product;
         }
         return false;

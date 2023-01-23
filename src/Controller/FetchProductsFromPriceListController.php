@@ -3,7 +3,6 @@
 namespace WebShoppingApp\Controller;
 
 use WebShoppingApp\DataFlow\InputData;
-use WebShoppingApp\Model\ProductFactory;
 use WebShoppingApp\Model\ProductStorageByPDO;
 use WebShoppingApp\Storage\Database;
 use WebShoppingApp\Storage\DatabaseData;
@@ -24,15 +23,15 @@ class FetchProductsFromPriceListController implements ActionsController
 
     public function handle(InputData $inputData): array
     {
+        $productRecords = [];
         try {
             $databaseData = new DatabaseData((new StorageData())->dbData());
             $productStorage = new ProductStorageByPDO(new Database($databaseData));
-            return $productStorage->fetchAll();
-            echo 'Loading all the products in the price list<br>';
+            $productRecords = $productStorage->fetchAll();
         } catch (Exception $ex) {
-            echo 'Oooops! Something unexpected happened. Try Again later!';
-            echo '<div>{$ex->getMessage()}</div>';
+            echo '<div class="message failure"> Oooops! Something unexpected happened. Try Again later!</div>';
+            error_log($ex->getMessage());
         }
-        return [];
+        return $productRecords;
     }
 }

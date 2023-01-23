@@ -2,13 +2,15 @@
 declare(strict_types=1);
 
 namespace WebShoppingApp\Controller;
+//use WebShoppingApp\DataFlow\UserInput;
+use WebShoppingApp\DataFlow\InputData;
 
 final class ControllerManager
 {
-    /** @var Controller[] */
+    /** @var ActionsController[] */
     private array $controllers;
 
-    public function add(Controller $controller): self
+    public function add(ActionsController $controller): self
     {
         $this->controllers[] = $controller;
         return $this;
@@ -16,12 +18,13 @@ final class ControllerManager
 
     public function handle(InputData $inputData): array
     {
-        $action = $inputData->getInputs()['action'] ?? '';
+        $action = $inputData->getInputs()['action']?->value() ?? '';
         foreach ($this->controllers as $controller) {
             if ($controller->canHandle($action)) {
                 return $controller->handle($inputData);
             }
         }
-        throw new \InvalidArgumentException('The request cannot be handled!');
+        throw new \InvalidArgumentException('The request cannot be handled! Appropriate controller not found!');
+        //echo 'Appropriate controller not found!';
     }
 }

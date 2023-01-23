@@ -91,3 +91,74 @@ table form button {
     background-color: aquamarine;
 }
 /* Table styles end */
+
+
+
+
+
+
+
+
+/* FOOTER STYLING */
+.footer {
+    width: 98%;
+    font-size: 85%;
+    color: rgb(96,96,232);
+    margin: 8pt;
+}
+.footer > * {
+    width: 100%;
+    text-align: right;
+}
+/* FOOTER STYLING ENDS */
+
+
+/* MESSAGES STYLING */
+
+.message {
+    width: 60%;
+    max-width: 50em;
+    margin: 3pt auto;
+    border: 1px solid;
+    border-radius: 12px;
+    padding: 1.25ex;
+    text-align: center;
+    box-sizing: content-box;
+    font-family: sans-serif;
+    font-weight: 600;
+}
+.error {
+    background-color: #ffbbbb;
+    color: #c00;
+}
+.success {
+    background-color: #a9ffa9;
+    color: #060;
+}
+.welcome {
+    background-color: #e6e6ff;
+    color: #000022;
+}
+
+.failure {
+    background-color: #ffaaaa;
+    color: #660000;
+}
+.warning {
+    background-color: #ffd9d9;
+    color: #300;
+}
+
+.general {
+    background-color: #ffff66;
+    color: #333;
+}
+.unspecified {
+    color:  #000;
+}
+
+.info {
+    background-color: #88e6e6;
+    color: #333388;
+}
+/* MESSAGES STYLING ENDS

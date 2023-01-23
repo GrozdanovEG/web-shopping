@@ -31,14 +31,12 @@ class DeleteProductFromPriceListController implements ActionsController
             $databaseData = new DatabaseData((new StorageData())->dbData());
             $productStorage = new ProductStorageByPDO(new Database($databaseData));
             $productStorage->remove($product);
-            echo "The product {$product->name()} was removed from the catalog";
+            echo "<div class=\"message success\">The product {$product->name()} was removed from the catalog</div>";
         } catch (Exception $ex) {
-            echo 'Oooops! Something unexpected happened. Try Again later!';
-            echo '<div>{$ex->getMessage()}</div>';
+            echo '<div class="message failure">Oooops! Something unexpected happened. Try Again later!</div>';
+            error_log($ex->getMessage());
         }
-        return [
-            'id' => $product->id(),
-        ];
+        return ['id' => $product->id()];
     }
 }
 

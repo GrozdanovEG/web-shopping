@@ -29,17 +29,16 @@ class UpdateProductFromPriceListController implements ActionsController
             $productStorage = new ProductStorageByPDO(new Database($databaseData));
             $productToUpdateId = $inputData->getInputs()['id']->value();
             $product = $productStorage->findById($productToUpdateId);
-            if ($product !== null) {
+            // @todo to be moved to View layer
                 echo "<h2>The product {$product->name()} can be/has been modified</h2>";
                 require_once __DIR__ . '/../View/templates/update-product-form.php';
-            }
+
             $productStorage->store($product, $inputData);
         } catch (Exception $ex) {
-            echo 'Oooops! Something unexpected happened. Try Again later!';
-            echo '<div>{$ex->getMessage()}</div>';
+            // @todo implementing handling messages logic
+            echo '<div class="message failure">Oooops! Something unexpected happened. Try Again later!</div>';
+            error_log($ex->getMessage());
         }
-        return [
-            'id' => $product->id(),
-        ];
+        return ['id' => $product->id()];
     }
 }

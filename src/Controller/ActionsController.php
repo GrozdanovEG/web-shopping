@@ -17,5 +17,5 @@ interface ActionsController
      * @param InputData $InputData
      * @return array
      */
-    public function handle(InputData $InputData): array;
+    public function handle(InputData $inputData): array;
 }

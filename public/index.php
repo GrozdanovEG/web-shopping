@@ -5,36 +5,32 @@ session_start();
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../src/View/templates/header.html';
 
-require_once __DIR__ . '/../src/View/templates/add-product-form.html';
-
 use WebShoppingApp\DataFlow\UserInput;
 use WebShoppingApp\DataFlow\InputData;
 $userInput = new UserInput();
 $inputData = $userInput->getInputs();
 
-
+use WebShoppingApp\Controller\ControllerManager;
+use WebShoppingApp\Controller\HomeActionController;
 use WebShoppingApp\Controller\AddProductToPriceListController;
 use WebShoppingApp\Controller\FetchProductsFromPriceListController;
 use WebShoppingApp\Controller\UpdateProductFromPriceListController;
 use WebShoppingApp\Controller\DeleteProductFromPriceListController;
 
-if (isset($inputData['action']) && $inputData['action']->value() === 'add_product') {
-    (new AddProductToPriceListController())->handle($userInput);
-} elseif (isset($inputData['action']) && $inputData['action']->value() === 'update_product') {
-    (new UpdateProductFromPriceListController())->handle($userInput);
-} elseif (isset($inputData['action']) && $inputData['action']->value() === 'remove_product') {
-    (new DeleteProductFromPriceListController())->handle($userInput);
-} else {
-    $priceListProducts = (new FetchProductsFromPriceListController())->handle($userInput);
-    echo '<table>' . PHP_EOL;
-    foreach ($priceListProducts as $plp)
-        echo $plp->render() ;
-    echo '</table>' . PHP_EOL;
-}
 
-echo '<pre>';
+$controllerManager = new ControllerManager();
+$controllerManager
+    ->add(new HomeActionController())
+    ->add(new AddProductToPriceListController())
+    ->add(new UpdateProductFromPriceListController())
+    ->add(new DeleteProductFromPriceListController());
 
-echo '</pre>';
-echo '<hr>';
+
+$output = $controllerManager->handle($userInput);
+//echo '<pre>';var_dump($output);echo '</pre>';
+
+
+
+
 include __DIR__ . '/../src/View/templates/footer.html';
 
