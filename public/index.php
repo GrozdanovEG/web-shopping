@@ -6,10 +6,22 @@ use WebShoppingApp\DataFlow\UserInput;
 $userInput = new UserInput();
 $inputData = $userInput->getInputs();
 
-if (! isset($sessionManager)) $sessionManager = new WebShoppingApp\Controller\SessionsManager();
-if (! $sessionManager->isRunning()) {
-    $_SESSION['CART'] = \WebShoppingApp\Model\CartFactory::createFromInputData($userInput);
+use WebShoppingApp\Controller\SessionsManager;
+use WebShoppingApp\Model\Cart;
+if (! isset($sessionManager)) $sessionManager = new SessionsManager();
+if ( $sessionManager->isRunning() ) {
+    if($sessionManager->cart) {
+        echo 'The cart is not null';
+        var_dump($sessionManager->cart);
+    } else {
+        echo 'The cart must be created';
+        $sessionManager->cart = new Cart();
+    }
 }
+
+$cart = $sessionManager->cart;
+echo '<pre>' . $cart ;var_dump($cart);echo '</pre>';
+
 
 
 use WebShoppingApp\Controller\ControllerManager;
@@ -31,7 +43,5 @@ require_once __DIR__ . '/../src/View/templates/header.html';
 require_once __DIR__ . '/../src/View/templates/navigation.html';
 $output = $controllerManager->handle($userInput);
 
-//echo '<pre>';var_dump($sessionManager);echo '</pre>';
-
-include __DIR__ . '/../src/View/templates/footer.html';
+require_once __DIR__ . '/../src/View/templates/footer.html';
 

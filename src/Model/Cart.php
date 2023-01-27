@@ -9,13 +9,12 @@ class Cart
 {
 
     /** @var Product[]  */
-    private array $products;
+    protected array $products = [];
     private int $visibility = 1;
 
     public function __construct(?Product $product = null)
     {
-        if (isset($product))
-        $this->addProduct($product);
+        if (isset($product)) $this->addProduct($product);
     }
 
     public function addProduct(Product $product): void
@@ -23,9 +22,9 @@ class Cart
         $this->products[] = $product;
     }
 
-    public function orderId(): string
+    public function itemsCount(): int
     {
-        return $this->orderId;
+        return count($this->products);
     }
 
     public function visibility(): int
@@ -36,5 +35,10 @@ class Cart
     public function hideItem(): void
     {
         if ($this->visibility() > 0 ) $this->visibility = 0;
+    }
+
+    public function __toString(): string
+    {
+        return 'The cart contains ' . $this->itemsCount() . ' items' . PHP_EOL;
     }
 }

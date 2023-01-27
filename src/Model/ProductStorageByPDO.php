@@ -1,11 +1,10 @@
 <?php
-
+declare(strict_types=1);
 namespace WebShoppingApp\Model;
 
 use PDO;
 use WebShoppingApp\Storage\Connectable;
 use WebShoppingApp\DataFlow\{StorageInput,InputData};
-use WebShoppingApp\Storage\Database;
 
 class ProductStorageByPDO implements ProductStorage
 {
@@ -94,10 +93,17 @@ class ProductStorageByPDO implements ProductStorage
     /** @return Product[] */
     public function fetchAll(): array
     {
-        $query = "SELECT * FROM products WHERE visibility > 0";
-        $statement = $this->pdoConnection->query($query);
-        $statement->setFetchMode(PDO::FETCH_ASSOC);
-        $results = $statement->fetchAll();
+        $results = [];
+        try {
+            $query = "SELECT * FROM products WHERE visibility > 0";
+            $statement = $this->pdoConnection->query($query);
+            $statement->setFetchMode(PDO::FETCH_ASSOC);
+            $results = $statement->fetchAll();
+        } catch (\Throwable $th) {
+            error_log('Error: '. $th->getMessage().
+                              '  ['. $th->getFile() .':' . $th->getLine() . ']' . PHP_EOL);
+            echo '<div class="message failure">We are currently experiencing technical problem. Sorry for the inconvenience!</div>'.PHP_EOL;
+        }
         $products = [];
         foreach ($results as $result) {
             $storageInput = new StorageInput($result);

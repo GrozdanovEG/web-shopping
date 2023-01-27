@@ -1,9 +1,9 @@
 # Online Shopping Application 
 
 ## Required features
-CRUD - Price List/Catalogue Products  - Implemented, not fully tested and fixed/refactored
-CRUD - Cart/Basket Products           - Implementation in progress
-CR   - Orders / Carts (Checkout and listing history) - To be done 
+CRUD - Price List/Catalogue Products  - Implemented, not fully tested and fixed/refactored  
+CRUD - Cart/Basket Products           - Implementation in progress  
+CR   - Orders / Carts (Checkout and listing history) - To be done   
 
 ---
 ### Diary 
