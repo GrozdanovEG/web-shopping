@@ -4,6 +4,7 @@ namespace WebShoppingApp\Controller;
 
 use WebShoppingApp\DataFlow\InputData;
 use WebShoppingApp\Model\Product;
+use WebShoppingApp\View\PriceListHtmlOutput;
 
 class HomeActionController implements ActionsController
 {
@@ -28,28 +29,10 @@ class HomeActionController implements ActionsController
             foreach ($priceListProducts as $plp) echo $plp->render();
             echo '</table>' . PHP_EOL;
         } elseif ($mode === 'shopping') {
-            echo '<form action="/?mode=shopping" method="post">';
-            foreach ($priceListProducts as $plp) {
-                $avail = ($plp->quantity() >= 1 ? 'in' : 'out of');
-                echo <<<OUTPUT
-                    <div>
-                        <span class="image"><img src="/media/img/random.png" alt="no image available"></span>
-                        <span class="name">{$plp->name()}</span>
-                        <span class="description">{$plp->description()}</span>
-                        <span class="price">&dollar;{$plp->price()}</span>
-                        <span class="availability">{$avail} stock</span>
-                        <span class="button">
-                            <input type="hidden" name="action" value="add_to_cart">
-                            <button type="submit" name="id" value="{$plp->id()}">Add to cart</button>
-                        </span>
-                    </div>
-                OUTPUT;
-            }
-            echo '</form>';
+            echo PHP_EOL . '<form action="/?mode=shopping" method="post">' . PHP_EOL ;
+            echo (new PriceListHtmlOutput($priceListProducts))->toListView();
+            echo '</form>'. PHP_EOL;
         }
-
-
-
         return $priceListProducts;
     }
 }

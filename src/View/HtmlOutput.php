@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-
 namespace WebShoppingApp\View;
 
 class HtmlOutput extends Output
@@ -19,13 +18,7 @@ class HtmlOutput extends Output
 
     public function toTableRowView(): string
     {
-        /** @todo  To be moved to ProductHtmlOutput specific class */
-        $form = (new ApplicationOutputFormatter())->productButtonsGenerator($this->entity);
-        $tableRowOutput = "  <td>{$form}</td>".PHP_EOL;
-        $tableRowOutput .= "  <td>{$this->entity->name()}</td>".PHP_EOL;
-        $tableRowOutput .= "  <td>{$this->entity->description()}</td>".PHP_EOL;
-        $tableRowOutput .= "  <td>&dollar;{$this->entity->price()}</td>".PHP_EOL;
-        $tableRowOutput .= "  <td>{$this->entity->quantity()}</td>".PHP_EOL;
+        $tableRowOutput = $this->entity; // currently using the built-in entity toString conversion
         return '<tr>' . PHP_EOL . $tableRowOutput . PHP_EOL. '</tr>' . PHP_EOL;
     }
 }

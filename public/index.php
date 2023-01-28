@@ -29,8 +29,14 @@ require_once __DIR__ . '/../src/View/templates/navigation.html';
 
 echo '<div> <a href="?mode=shopping&action=cart">see the cart</a> |';
 echo '<a href="?mode=shopping&action=reset_cart">reset cart content</a>  </div>';
-$output = $controllerManager->handle($userInput);
 
+
+try {
+    $output = $controllerManager->handle($userInput);
+} catch (Throwable $th) {
+    echo '<div class="message failure">Your request cannot be processed. Check your input and/or try again later!</div>';
+    error_log('Failure: ' . $th->getMessage());
+}
 
 require_once __DIR__ . '/../src/View/templates/footer.html';
 

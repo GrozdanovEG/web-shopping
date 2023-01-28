@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace WebShoppingApp\Model;
 
-use WebShoppingApp\View\HtmlOutput;
+use WebShoppingApp\View\ProductHtmlOutput;
 use WebShoppingApp\View\ListableItem;
 
 class Product extends ListableItem
@@ -67,6 +67,11 @@ class Product extends ListableItem
     public function incrementQuantity(): void
     {
         $this->quantity++;
+    }
+
+    public function render(): string|null
+    {
+        return (new ProductHtmlOutput($this))->toTableRowView();
     }
 
     public function __toString(): string

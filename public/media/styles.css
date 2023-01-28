@@ -96,7 +96,61 @@ table form button {
 
 
 
+/* PRICE LIST STYLING */
+ol.pricelist li {
+    margin-top: 1px;
+    padding: 2vw;
+    background-color: transparent;
+}
+li span {display: block;}
+span.image {
+    width: 40px;
+    height: auto;
+    border: 1px solid;
+}
+span.name {
+    font-weight: 600;
+    text-align: center;
+}
+span.price {
+    color: blue;
+    text-align: right;
+}
+span.order {
+    margin: 1em;
+}
+span.button {
+    width: 10em;
+    text-align: right;
+}
+span.button button {
+    background-color: #006600;
+    color: white;
+    padding: 0.5vw;
+    border-radius: 2vw;
+}
+span.availability {
+    color: red;
+    text-align: right;
+}
+span.description {
+    text-align: left;
+}
 
+
+/* <span class="image"><img src="/media/img/random.png" alt="no image available"></span>
+        <span class="name">SDD 8TB</span>
+        <span class="price">&dollar;482</span>
+        <span class="order">
+            <span class="button">
+                <input type="hidden" name="action" value="add_to_cart">
+                    <button type="submit" name="id" value="ProdNu63cbd2f5f3a165.94255838">Add to cart</button>
+            </span>
+            <span class="availability">In stock</span>
+        </span>
+        <span class="description">8 TB solid state drive</span>
+        <span style="clear: both"></span> */
+/* PRICE LIST STYLING ENDS */
 
 
 /* FOOTER STYLING */

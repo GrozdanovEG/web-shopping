@@ -4,7 +4,6 @@ namespace WebShoppingApp\View;
 
 class ListableItem implements Listable
 {
-
     /**
      * @inheritDoc
      */

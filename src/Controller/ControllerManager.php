@@ -25,7 +25,7 @@ final class ControllerManager
                 return $controller->handle($inputData);
             }
         }
-        throw new \InvalidArgumentException('The request cannot be handled! Appropriate controller not found!');
-        //echo 'Appropriate controller not found!';
+        error_log('Request {'.$action.'} cannot be handled.');
+        throw new \InvalidArgumentException('No appropriate controller not found!');
     }
 }
