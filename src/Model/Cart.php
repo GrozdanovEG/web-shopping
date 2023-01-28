@@ -37,6 +37,12 @@ class Cart
         if ($this->visibility() > 0 ) $this->visibility = 0;
     }
 
+    /** @return Product[] */
+    public function fetchAll(): array
+    {
+        return $this->products;
+    }
+
     public function __toString(): string
     {
         return 'The cart contains ' . $this->itemsCount() . ' items' . PHP_EOL;

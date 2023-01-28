@@ -59,6 +59,16 @@ class Product extends ListableItem
          if ($this->visibility > 0 ) $this->visibility = 0;
     }
 
+    public function clearQuantity(): void
+    {
+        $this->quantity = 0;
+    }
+
+    public function incrementQuantity(): void
+    {
+        $this->quantity++;
+    }
+
     public function __toString(): string
     {
         return "[{$this->id()}]|  {$this->name()}: {$this->description()}|  &dollar;{$this->price()}|   Qty: {$this->quantity()}| ";

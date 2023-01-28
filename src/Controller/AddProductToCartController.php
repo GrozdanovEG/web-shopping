@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace WebShoppingApp\Controller;
 
 use WebShoppingApp\DataFlow\InputData;
@@ -8,6 +9,7 @@ use WebShoppingApp\Model\ProductStorageByPDO;
 use WebShoppingApp\Storage\Database;
 use WebShoppingApp\Storage\DatabaseData;
 use WebShoppingApp\Storage\StorageData;
+use WebShoppingApp\Model\Cart;
 
 class AddProductToCartController implements ActionsController
 {
@@ -19,16 +21,30 @@ class AddProductToCartController implements ActionsController
 
     public function handle(InputData $inputData): array
     {
+        if (! isset($sessionManager)) $sessionManager = new SessionsManager();
+        if ( $sessionManager->isRunning() && (! $sessionManager->cart) )
+            $sessionManager->cart = new Cart();
+
         $databaseData = new DatabaseData((new StorageData())->dbData());
         $productStorage = new ProductStorageByPDO(new Database($databaseData));
-        $productToUpdateId = $inputData->getInputs()['id']->value();
-        $product = $productStorage->findById($productToUpdateId);
-        $_SESSION['CART']->addProduct($product);
-        //foreach ($priceListProducts as $priceListProduct) echo $priceListProduct . '<br>' . PHP_EOL;
+        $productId = $inputData->getInputs()['id']->value();
+        $product = $productStorage->findById($productId);
+        $product->clearQuantity();
+        $product->incrementQuantity();
 
+        $found = false;
+        $cartList = ($sessionManager->cart)->fetchAll();
+        $max = count($cartList);
+        for ($i = 0; $i < $max; $i++ ) {
+            if ($cartList[$i]->id() === $productId) {
+                $cartList[$i]->incrementQuantity();
+                $found = true;
+                break;
+            }
+        }
+        if (! $found) ($sessionManager->cart)->addProduct($product);
 
-        echo 'Add Product To Cart Controller Invoked: ' . $product;
-
-        return [];
+        echo "<div class=\"message info\">{$product->name()} added to the cart!</div>";
+        return ['id' => $product->id()];
     }
 }

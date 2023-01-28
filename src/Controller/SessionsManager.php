@@ -6,6 +6,9 @@ class SessionsManager
 {
     protected array $session;
     private bool $running = false;
+    /**
+     * @var mixed|null
+     */
 
     public function __construct()
     {
@@ -32,7 +35,7 @@ class SessionsManager
         if ( $this->isRunning() ) return false;
         $this->clear();
         session_start();
-        $this->session = $_SESSION;
+        $this->session = &$_SESSION;
         $this->running = true;
         return $this->running;
     }
@@ -50,5 +53,16 @@ class SessionsManager
     public function __set(string $name, $value): void
     {
         $this->session[$name] = $value;
+    }
+
+    public function __toString(): string
+    {
+        $runningState = $this->running?'Yes':'No';
+        $keys = array_keys($this->session);
+        $keyList = array_reduce($keys, function($o, $k) {return $o .= $k.':';});
+        return <<<STATS
+           Running: {$runningState}
+           SessionDataKeys: $keyList
+        STATS;
     }
 }
