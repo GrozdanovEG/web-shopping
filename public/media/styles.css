@@ -29,7 +29,7 @@ ul {
 
 form {
     background-color: aliceblue;
-    width: 50%;
+    width: 80%;
     margin: auto;
     padding: 1.5em;
     border: 0pt dotted red;
@@ -45,18 +45,19 @@ ul {
 
 label,
 input,
-select {
+select,
+button {
     background-color: inherit;
     display: inline;
     font-size: 95%;
-    width: 9em;
+    width: 16em;
     margin: 1vw;
     border-radius: 8px;
 }
 label {
     width: 45em;
 }
-input.button {
+input.button, button {
     background-color: rgb(134,134,211);
 }
 input:focus,
@@ -67,7 +68,31 @@ select:focus {
 option:focus {
     color: blue;
 }
+
+.clear-fix {
+    clear: both;
+}
+
+div {
+    clear: both;
+}
 /* GLOABAL  ENDS */
+
+/* NAVIGATION */
+#navigation {
+    width: 80%;
+    margin: auto;
+}
+#navigation ul {
+    text-align: center;
+}
+
+#navigation ul li {
+    float: left;
+    padding: 2vw;
+    text-align: center;
+}
+/* NAVIGATION ENDS */
 
 /* Table styles */
 table {
@@ -98,8 +123,6 @@ tr.removed, tr.removed > * {
     color: lightgrey;
 }
 /* Table styles end */
-
-
 
 
 
@@ -143,20 +166,6 @@ span.availability {
 span.description {
     text-align: left;
 }
-
-
-/* <span class="image"><img src="/media/img/random.png" alt="no image available"></span>
-        <span class="name">SDD 8TB</span>
-        <span class="price">&dollar;482</span>
-        <span class="order">
-            <span class="button">
-                <input type="hidden" name="action" value="add_to_cart">
-                    <button type="submit" name="id" value="ProdNu63cbd2f5f3a165.94255838">Add to cart</button>
-            </span>
-            <span class="availability">In stock</span>
-        </span>
-        <span class="description">8 TB solid state drive</span>
-        <span style="clear: both"></span> */
 /* PRICE LIST STYLING ENDS */
 
 
