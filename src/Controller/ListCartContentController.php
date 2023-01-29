@@ -4,12 +4,6 @@ namespace WebShoppingApp\Controller;
 
 use WebShoppingApp\DataFlow\InputData;
 use WebShoppingApp\View\CartHtmlOutput;
-use WebShoppingApp\Model\ProductFactory;
-use WebShoppingApp\Model\ProductStorageByPDO;
-use WebShoppingApp\Storage\Database;
-use WebShoppingApp\Storage\DatabaseData;
-use WebShoppingApp\Storage\StorageData;
-use WebShoppingApp\Model\Cart;
 
 class ListCartContentController implements ActionsController
 {
@@ -26,7 +20,8 @@ class ListCartContentController implements ActionsController
             return [];
         }
         $products = ($sessionManager->cart)->fetchAll();
-        echo '<form mathod="post">' . (new CartHtmlOutput($products))->toTableView();
+        echo   PHP_EOL . '<form method="post" action="/?">'. PHP_EOL .
+              (new CartHtmlOutput($products))->toTableView();
         echo '<button type="submit" name="action" value="update_cart">Update cart</button>'.PHP_EOL;
         echo '<button type="submit" name="action" value="checkout">Proceed to checkout</button>'.PHP_EOL;
         echo '</form>';

@@ -7,7 +7,6 @@ use WebShoppingApp\DataFlow\InputField;
 
 class ProductFactory
 {
-    //public function __construct() {}
     /** @param InputField[]
      *  @return Product
      */
@@ -15,7 +14,8 @@ class ProductFactory
     {
         /** @var $idArr = InputField[] */
         $idArr = $inputData->getInputs();
-        $id = isset($idArr['id']) ? $idArr['id']->value(): uniqid('ProdNu', true);
+        $id = isset($idArr['id']) ? $idArr['id']->value():
+                   (new RandomValueGenerator())->mixed(48,52);
         $name = isset($idArr['name']) ? $idArr['name']->value(): '';
         $description = isset($idArr['description']) ? $idArr['description']->value(): '';
         $price = (float)(isset($idArr['price']) ? $idArr['price']->value(): 0.0);

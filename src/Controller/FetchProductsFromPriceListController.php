@@ -28,9 +28,9 @@ class FetchProductsFromPriceListController implements ActionsController
             $databaseData = new DatabaseData((new StorageData())->dbData());
             $productStorage = new ProductStorageByPDO(new Database($databaseData));
             $productRecords = $productStorage->fetchAll();
-        } catch (Exception $ex) {
+        } catch (Throwable $th) {
             echo '<div class="message failure"> Oooops! Something unexpected happened. Try Again later!</div>';
-            error_log($ex->getMessage());
+            error_log($th->getMessage());
         }
         return $productRecords;
     }

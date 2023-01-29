@@ -79,6 +79,7 @@ table, tr, th, td {
     border: 1px solid green;
     border-collapse: collapse;
     text-align: center;
+    padding: 2pt;
 }
 
 table form {

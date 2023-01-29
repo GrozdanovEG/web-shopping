@@ -40,7 +40,7 @@ class CartHtmlOutput
                         <tr>
                             <td>{$li->name()}</td>
                             <td>&dollar;{$li->price()}</td>
-                            <td><input type="number" value="{$li->quantity()}"></td>
+                            <td><input type="number" name="{$li->id()}" value="{$li->quantity()}"></td>
                             <td>Total: &dollar;{$itemTotal}</td>
                         </tr>
                     ROW;

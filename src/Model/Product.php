@@ -15,7 +15,8 @@ class Product extends ListableItem
     private int $visibility = 1;
 
     public function __construct(string $id, string $name,
-                                string $description, float $price, int $quantity)
+                                string $description, float $price,
+                                int $quantity)
     {
         $this->id = $id;
         $this->name = $name;

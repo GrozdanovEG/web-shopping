@@ -14,6 +14,7 @@ use WebShoppingApp\Controller\DeleteProductFromPriceListController;
 use WebShoppingApp\Controller\ListCartContentController;
 use WebShoppingApp\Controller\AddProductToCartController;
 use WebShoppingApp\Controller\ResetCartContentController;
+use WebShoppingApp\Controller\UpdateCartContentController;
 
 $controllerManager = new ControllerManager();
 $controllerManager->add(new HomeActionController())
@@ -22,14 +23,14 @@ $controllerManager->add(new HomeActionController())
     ->add(new DeleteProductFromPriceListController())
     ->add(new ListCartContentController())
     ->add(new AddProductToCartController())
-    ->add(new ResetCartContentController());
+    ->add(new ResetCartContentController())
+    ->add(new UpdateCartContentController());
 
 require_once __DIR__ . '/../src/View/templates/header.html';
 require_once __DIR__ . '/../src/View/templates/navigation.html';
 
 echo '<div> <a href="?mode=shopping&action=cart">see the cart</a> |';
 echo '<a href="?mode=shopping&action=reset_cart">reset cart content</a>  </div>';
-
 
 try {
     $output = $controllerManager->handle($userInput);
