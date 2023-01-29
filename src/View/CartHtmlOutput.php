@@ -36,8 +36,9 @@ class CartHtmlOutput
         $total = 0.0;
         foreach ($listableItems as $li) {
             $itemTotal = ($li->quantity() * $li->price());
+            $productStatus = $li->quantity() ? 'incart' : 'removed';
             $rows .= <<<ROW
-                        <tr>
+                        <tr class="{$productStatus}">
                             <td>{$li->name()}</td>
                             <td>&dollar;{$li->price()}</td>
                             <td><input type="number" name="{$li->id()}" value="{$li->quantity()}"></td>

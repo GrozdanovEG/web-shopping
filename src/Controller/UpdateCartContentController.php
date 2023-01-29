@@ -1,16 +1,10 @@
 <?php
 declare(strict_types=1);
 namespace WebShoppingApp\Controller;
+
 use WebShoppingApp\DataFlow\InputData;
 use WebShoppingApp\Model\Cart;
-use WebShoppingApp\Model\ProductFactory;
-use WebShoppingApp\Model\ProductStorageByPDO;
-use WebShoppingApp\Storage\Database;
-use WebShoppingApp\Storage\DatabaseData;
-use WebShoppingApp\Storage\StorageData;
-use WebShoppingApp\View\CartHtmlOutput;
-
-
+use WebShoppingApp\Model\Product;
 
 class UpdateCartContentController implements ActionsController
 {
@@ -21,20 +15,47 @@ class UpdateCartContentController implements ActionsController
 
     public function handle(InputData $inputData): array
     {
+        $priceListProducts = (new FetchProductsFromPriceListController())->handle($inputData) ?? [];
         if (! isset($sessionManager)) $sessionManager = new SessionsManager();
         if ( $sessionManager->isRunning() && (! $sessionManager->cart) )
-            $sessionManager->cart = new Cart();
+                $sessionManager->cart = new Cart();
 
         $cartList = ($sessionManager->cart)->fetchAll();
+
+        $sessionManager->cart = $this->updateCartContent($cartList, $priceListProducts, $inputData);
+
+        echo '<div class="message info">You cart was updated</div>';
+
+        return [$sessionManager->cart->fetchAll()];
+    }
+
+    private function updateCartContent(array $cartList, array $priceListProducts,
+                                       InputData $inputData): Cart
+    {   /* @todo refactoring attempt expected */
         $max = count($cartList);
         $userInputList = $inputData->getInputs();
-        for ($i = 0; $i < $max; $i++ ) {
-            $prodId = $cartList[$i]?->id();
-            $newQuantity = $userInputList[$prodId]?->value();
-            // @todo updating quality to be implemented
-            echo "{$cartList[$i]->name()} : Old qty: {$cartList[$i]->quantity()}, {$newQuantity} <br>";
+        $cartUpdated = new Cart();
+        for ($i = 0; $i < $max; $i++) {
+            $cartProduct = $cartList[$i];
+            $userInputQuantity = (int)$userInputList[$cartProduct->id()]?->value();
+            $quantity = $userInputQuantity;
+            foreach ($priceListProducts as $plp) {
+                if ($plp->id() === $cartProduct->id()) {
+                    if ($userInputQuantity > $plp->quantity()) {
+                        $quantity = $cartProduct->quantity();
+                        // @todo moved to separately handled logic
+                        echo "<div class='message warning'>Product {$cartProduct->name()} cannot be updated. 
+                               No sufficient quantity. 
+                              Only {$plp->quantity()} in stock.</div>";
+                    } elseif  ($userInputQuantity <= 0) {
+                        $quantity = 0;
+                    }
+                    $productUpdated = new Product($plp->id(), $plp->name(), $plp->description(),
+                        $cartProduct->price(), $quantity);
+                }
+            }
+            $cartUpdated->addProduct($productUpdated);
         }
-        echo "<div class=\"message info\">UpdateCartController invoked!</div>";
-        return [];
+        return $cartUpdated;
     }
 }

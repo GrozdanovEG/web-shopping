@@ -91,6 +91,12 @@ table form button {
     border-radius: 12px;
     background-color: aquamarine;
 }
+tr.incart {
+    color: black;
+}
+tr.removed, tr.removed > * {
+    color: lightgrey;
+}
 /* Table styles end */
 
 

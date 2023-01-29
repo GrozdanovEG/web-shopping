@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WebShoppingApp\Controller;
 
 use WebShoppingApp\DataFlow\InputData;
-use WebShoppingApp\Model\ProductFactory;
 use WebShoppingApp\Model\ProductStorageByPDO;
 use WebShoppingApp\Storage\Database;
 use WebShoppingApp\Storage\DatabaseData;
