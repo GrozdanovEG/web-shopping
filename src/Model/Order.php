@@ -4,12 +4,15 @@ declare(strict_types=1);
 namespace WebShoppingApp\Model;
 
 use DateTime;
+use WebShoppingApp\View\ListableItem;
 
 class Order
 {
     private string $id;
     private float $total;
     private DateTime $completedAt;
+    /** @var ListableItem[]  */
+    private array $items = [];
     private int $visibility = 1;
 
     public function __construct(string $id, float $total,
@@ -40,8 +43,25 @@ class Order
         return $this->visibility;
     }
 
-    public function hideItem(): void
+    public function hide(): void
     {
         if ($this->visibility() > 0 ) $this->visibility = 0;
+    }
+
+    public function addItem(ListableItem $item): void
+    {
+        $this->items[] = $item;
+    }
+
+    /** @return ListableItem[] */
+    public function getItems(): array
+    {
+        return $this->items;
+    }
+
+    public function __toString(): string
+    {
+        $items = array_reduce($this->items, function($carry,$item) { return $carry .= '['.$item.'], ';} );
+        return "[{$this->id()}:{$this->completedAt->format('Y-m-d H:i:s')}:{$this->total()} ::" . PHP_EOL . $items . ']' . PHP_EOL;
     }
 }

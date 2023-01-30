@@ -33,29 +33,9 @@ class CartStorageByPDO implements CartStorage
 
     public function store(Cart $cart, ?InputData $inputData): Cart|false
     {
-        // @todo   to be implemented Cart specific logic
-        $cartFromInputData = CartFactory::createFromInputData($inputData);
-        $c = $cartFromInputData;
-        $parameters = [
-            'id' => $c->id() ?? $cart->id(),
-            'name' => $c->name() ?? $cart->name(),
-            'price' => $c->price() ?? $cart->price(),
-            'quantity' => $c->quantity() ?? $cart->quantity()
-        ];
-        $qBuilder = new CartQueryBuilder($cart);
+        // TODO: Implement store() method.
+        // Abandoned for now, not applicable
 
-        if ( $cart->id() === $cartFromInputData->id() ) {
-            $query = $qBuilder->modifyQueryMode('update')->build();
-        } else {
-            $query = $qBuilder->modifyQueryMode('insert')->build();
-        }
-
-        $statement = $this->pdoConnection->prepare($query);
-        if ( $statement->execute($parameters) ) {
-            echo "<div class=\"message success\">The operation with {$c->name()} was successful</div>";
-            return $c;
-        }
-        return false;
     }
 
 }

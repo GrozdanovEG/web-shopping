@@ -11,11 +11,6 @@ use WebShoppingApp\Storage\Database;
 class AddProductToPriceListController implements ActionsController
 {
 
-    public function __construct() //(Storage $storage)
-    {
-        //$this->storage = $storage;
-    }
-
     public function canHandle(string $action): bool
     {
         return ($action === 'add_product');

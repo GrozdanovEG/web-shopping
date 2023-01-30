@@ -2,8 +2,6 @@
 declare(strict_types=1);
 
 namespace WebShoppingApp\Model;
-use WebShoppingApp\DataFlow\InputData;
-use WebShoppingApp\Model\Product;
 
 class Cart
 {
@@ -41,6 +39,15 @@ class Cart
     public function fetchAll(): array
     {
         return $this->products;
+    }
+
+    public function total(): float
+    {
+        $total = 0.0;
+        foreach ($this->products as $p) {
+            $total += ($p->quantity() * $p->price());
+        }
+        return $total;
     }
 
     public function __toString(): string
