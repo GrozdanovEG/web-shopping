@@ -46,6 +46,7 @@ ul {
 label,
 input,
 select,
+textarea,
 button {
     background-color: inherit;
     display: inline;
@@ -59,6 +60,7 @@ label {
 }
 input.button, button {
     background-color: rgb(134,134,211);
+    text-align: center;
 }
 input:focus,
 select:focus {

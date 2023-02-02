@@ -28,11 +28,12 @@ class UpdateProductFromPriceListController implements ActionsController
             $databaseData = new DatabaseData((new StorageData())->dbData());
             $productStorage = new ProductStorageByPDO(new Database($databaseData));
             $productToUpdateId = $inputData->getInputs()['id']->value();
+            $store = ($inputData->getInputs()['store']?->value() === 'yes');
             $product = $productStorage->findById($productToUpdateId);
             // @todo to be moved to View layer
                 echo "<h2>The product {$product->name()} can be/has been modified</h2>";
                 require_once __DIR__ . '/../View/templates/update-product-form.php';
-            $productStorage->store($product, $inputData);
+            if ($store) $productStorage->store($product, $inputData);
         } catch (Exception $ex) {
             // @todo implementing handling messages/errors logic
             echo '<div class="message failure">Oooops! Something unexpected happened. Try Again later!</div>';

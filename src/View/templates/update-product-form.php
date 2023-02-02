@@ -7,7 +7,7 @@
     </label>
     <br>
     <label>Product description:
-        <input type="text" name="description" size="40" value="<?= $product->description(); ?>">
+        <textarea name="description" cols="25" rows="2"><?= $product->description(); ?></textarea>
     </label>
     <br>
     <label>Product price:
@@ -17,6 +17,7 @@
     <label>Quantity:
         <input type="text" name="quantity" size="6" value="<?= $product->quantity(); ?>">
     </label>
+    <input type="hidden" name="store" value="yes"/>
     <br>
-    <input type="submit" name="action" value="update_product" class="button small">
+    <button type="submit" name="action" value="update_product" class="button small">Update product</button>
 </form>

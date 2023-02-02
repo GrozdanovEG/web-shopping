@@ -7,11 +7,11 @@ use WebShoppingApp\View\ListableItem;
 
 class Product extends ListableItem
 {
-    protected string $id;
-    protected string $name;
-    protected string $description;
-    protected float $price;
-    protected int $quantity;
+    private string $id;
+    private string $name;
+    private string $description;
+    private float $price;
+    private int $quantity;
     private int $visibility = 1;
 
     public function __construct(string $id, string $name,

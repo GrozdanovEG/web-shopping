@@ -52,7 +52,7 @@ class ProductStorageByPDO implements ProductStorage
 
         $statement = $this->pdoConnection->prepare($query);
         if ( $statement->execute($parameters) ) {
-            echo "<div class=\"message success\">The operation with {$p->name()} was successful</div>";
+            echo "<div class=\"message success\">Changes was successfully written for \"{$p->name()}\"</div>";
             return $p;
         }
         return false;
