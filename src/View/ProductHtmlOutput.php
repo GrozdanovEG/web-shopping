@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace WebShoppingApp\View;
 
-class ProductHtmlOutput extends Output
+class ProductHtmlOutput extends HtmlOutput
 {
     protected Listable $entity;
 
@@ -13,6 +13,7 @@ class ProductHtmlOutput extends Output
 
     public function toListView(): string
     {
+        //@todo fixing and refactoring required
         $listableItems = $this->entity->fetchAll() ?? [];
         $output = '';
             $avail = ($li->quantity() >= 1 ? 'in' : 'out of');

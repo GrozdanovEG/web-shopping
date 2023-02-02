@@ -1,11 +1,9 @@
 <?php
-
 namespace WebShoppingApp\Model;
 
 use WebShoppingApp\DataFlow\InputData;
 use WebShoppingApp\Storage\Connectable;
 use PDO;
-use DateTime;
 
 class OrderStorageByPDO implements OrderStorage
 {
@@ -34,23 +32,33 @@ class OrderStorageByPDO implements OrderStorage
 
     public function store(Order $order, ?InputData $inputData): Order|false
     {
-        $queries['order'] = 'INSERT INTO orders (id, total, completed_at)
-                        VALUES
-                        ( :order_id, :total, :completed_at );';
-        $queries['items'] = 'INSERT INTO order_items  (order_id, product_id, quantity, price)
-                            VALUES
-                            (:order_id, :product_id, :quantity, :price);';
-        /* @todo  optional building queries by using separate class
-        $qBuilder = new OrderQueryBuilder($order);
-        $query = $qBuilder->modifyQueryMode('insert')->build();  */
+        $qBuilder = new OrderQueryBuilder();
+        $queries['order'] = $qBuilder->modifyQueryMode('insert')->build();
+        $queries['item'] = $qBuilder->modifyQueryMode('insert-item')->build();
 
-        /* transaction(s) executions */
+        /* transactions execution */
         if ($this->processQueries($order, $queries)) {
-            echo "<div class=\"message info\">The operation with the order was successful</div>";
-
+            echo '<div class="message success">Order successfully stored</div>';
             return $order;
         }
         return false;
+    }
+
+    public function fetchAll(): array
+    {
+        $results = [];
+        try {
+            $qBuilder = new OrderQueryBuilder();
+            $query= $qBuilder->modifyQueryMode('select')->build();
+            $statement = $this->pdoConnection->query($query);
+            $statement->setFetchMode(PDO::FETCH_ASSOC);
+            $results = $statement->fetchAll();
+        } catch (\Throwable $th) {
+            error_log('Error: '. $th->getMessage().
+                '  ['. $th->getFile() .':' . $th->getLine() . ']' . PHP_EOL);
+            echo '<div class="message failure">We are currently experiencing technical problem. Sorry for the inconvenience!</div>'.PHP_EOL;
+        }
+        return $results;
     }
 
     private function processQueries(Order $order, array $queries): bool
@@ -58,7 +66,7 @@ class OrderStorageByPDO implements OrderStorage
         try {
             $this->pdoConnection->beginTransaction();
             $statements['order'] = $this->pdoConnection->prepare($queries['order']);
-            $statements['items'] = $this->pdoConnection->prepare($queries['items']);
+            $statements['items'] = $this->pdoConnection->prepare($queries['item']);
             $parameters = [
                 'order_id' => $order->id(),
                 'total' => $order->total(),

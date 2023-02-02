@@ -23,4 +23,15 @@ class ProductFactory
         return new Product($id, $name, $description, $price, $quantity);
     }
 
+    public static function createFromArrayAssoc(array $prod): Product
+    {
+        /** @var  */
+        $id = $prod['id'] ?? ($prod['product_id'] ?? (new RandomValueGenerator())->mixed(48, 52));
+        $name = $prod['name'] ?? '';
+        $description = ($prod['description']) ??  '';
+        $price = (float)($prod['price'] ?? 0.0);
+        $quantity = (int)($prod['quantity'] ?? 0);
+        return new Product($id, $name, $description, $price, $quantity);
+    }
+
 }
