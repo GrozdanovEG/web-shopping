@@ -28,10 +28,12 @@ class OrderQueryBuilder
                 SELECTALL;
 
         $query['select-item-by-id'] =<<<SELECTED
-                SELECT  oi.*, orders.total, orders.completed_at
+                SELECT  oi.*, prod.name, orders.total, orders.completed_at
                    FROM order_items AS oi 
                    JOIN  orders
                    ON oi.order_id = orders.id
+                   JOIN products AS prod
+                   ON  oi.product_id = prod.id
                    WHERE oi.order_id = :id  AND (orders.visibility > 0 AND oi.visibility > 0)
                    ORDER BY orders.completed_at;
                 SELECTED;

@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace WebShoppingApp\Model;
 
 use DateTime;
+use WebShoppingApp\View\Listable;
 use WebShoppingApp\View\ListableItem;
+use WebShoppingApp\View\OrderHtmlOutput;
 
-class Order
+class Order implements Listable
 {
     private string $id;
     private float $total;
@@ -63,5 +65,10 @@ class Order
     {
         $items = array_reduce($this->items, function($carry,$item) { return $carry .= '['.$item.'], ';} );
         return "[{$this->id()}:{$this->completedAt->format('Y-m-d H:i:s')}:{$this->total()} ::" . PHP_EOL . $items . ']' . PHP_EOL;
+    }
+
+    public function render(): string|null
+    {
+        return (new OrderHtmlOutput($this))->toTableRowView();
     }
 }

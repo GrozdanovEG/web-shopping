@@ -14,7 +14,7 @@ class ProductHtmlOutput extends HtmlOutput
     public function toListView(): string
     {
         //@todo fixing and refactoring required
-        $listableItems = $this->entity->fetchAll() ?? [];
+        $li = $this->entity->fetchAll() ?? [];
         $output = '';
             $avail = ($li->quantity() >= 1 ? 'in' : 'out of');
             $addButton = $li->quantity() ?

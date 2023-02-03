@@ -77,19 +77,6 @@ class ProductStorageByPDO implements ProductStorage
         return false;
     }
 
-    /** @param string $id
-     *  @return Product    */
-    public function findById(string $id): Product
-    {
-        $query = "SELECT * FROM products WHERE id = :id AND visibility > 0";
-        $statement = $this->pdoConnection->prepare($query);
-        $statement->execute(['id' => $id]);
-        $statement->setFetchMode(PDO::FETCH_ASSOC);
-        $result= $statement->fetch();
-        $storageInput = new StorageInput($result);
-        return (ProductFactory::createFromInputData($storageInput));
-    }
-
     /** @return Product[] */
     public function fetchAll(): array
     {
@@ -110,5 +97,18 @@ class ProductStorageByPDO implements ProductStorage
             $products[] = ProductFactory::createFromInputData($storageInput);
         }
         return $products;
+    }
+
+    /** @param string $id
+     *  @return Product    */
+    public function findById(string $id): Product
+    {
+        $query = "SELECT * FROM products WHERE id = :id AND visibility > 0";
+        $statement = $this->pdoConnection->prepare($query);
+        $statement->execute(['id' => $id]);
+        $statement->setFetchMode(PDO::FETCH_ASSOC);
+        $result= $statement->fetch();
+        $storageInput = new StorageInput($result);
+        return (ProductFactory::createFromInputData($storageInput));
     }
 }

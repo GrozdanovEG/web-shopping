@@ -18,6 +18,7 @@ use WebShoppingApp\Controller\UpdateCartContentController;
 use WebShoppingApp\Controller\ShoppingCheckoutController;
 use WebShoppingApp\Controller\FinishCheckoutController;
 use WebShoppingApp\Controller\ListOrdersHistoryController;
+use WebShoppingApp\Controller\ListOrderDetailsController;
 
 $controllerManager = new ControllerManager();
 $controllerManager->add(new HomeActionController())
@@ -30,7 +31,8 @@ $controllerManager->add(new HomeActionController())
     ->add(new UpdateCartContentController())
     ->add(new ShoppingCheckoutController())
     ->add(new FinishCheckoutController())
-    ->add(new ListOrdersHistoryController());
+    ->add(new ListOrdersHistoryController())
+    ->add(new ListOrderDetailsController());
 
 require_once __DIR__ . '/../src/View/templates/header.html';
 require_once __DIR__ . '/../src/View/templates/navigation.html';

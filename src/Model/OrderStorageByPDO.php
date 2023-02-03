@@ -44,6 +44,23 @@ class OrderStorageByPDO implements OrderStorage
         return false;
     }
 
+    public function findById(string $id): array
+    {
+        $results = [];
+        try {
+            $qBuilder = new OrderQueryBuilder();
+            $query= $qBuilder->modifyQueryMode('select-item-by-id')->build();
+            $statement = $this->pdoConnection->prepare($query);
+            $statement->execute(['id' => $id]);
+            $statement->setFetchMode(PDO::FETCH_ASSOC);
+            $results = $statement->fetchAll();
+        } catch (\Throwable $th) {
+            error_log('Error: '. $th->getMessage().
+                '  ['. $th->getFile() .':' . $th->getLine() . ']' . PHP_EOL);
+            echo '<div class="message failure">We are currently experiencing technical problem. Sorry for the inconvenience!</div>'.PHP_EOL;
+        }
+        return $results;
+    }
     public function fetchAll(): array
     {
         $results = [];

@@ -10,6 +10,11 @@ class HtmlOutput extends Output
         $this->entity = $entity;
     }
 
+    public function entity(): Listable
+    {
+        return $this->entity;
+    }
+
     public function toListView(): string
     {
         $listItem = $this->entity->name() ?? '';
