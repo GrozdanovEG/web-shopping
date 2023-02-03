@@ -1,8 +1,10 @@
 <?php
 namespace WebShoppingApp\Model;
 
+use WebShoppingApp\Controller\FetchProductsFromPriceListController;
 use WebShoppingApp\DataFlow\InputData;
 use WebShoppingApp\Storage\Connectable;
+use WebShoppingApp\Model\Product;
 use PDO;
 
 class OrderStorageByPDO implements OrderStorage
@@ -30,14 +32,38 @@ class OrderStorageByPDO implements OrderStorage
         $this->pdoConnection = $this->connectable->connect($this->dbDriverName);
     }
 
-    public function store(Order $order, ?InputData $inputData): Order|false
+    public function store(Order $order, InputData $inputData): Order|false
     {
-        $qBuilder = new OrderQueryBuilder();
-        $queries['order'] = $qBuilder->modifyQueryMode('insert')->build();
-        $queries['item'] = $qBuilder->modifyQueryMode('insert-item')->build();
+
+        $productsFromPriceList = (new FetchProductsFromPriceListController())->handle($inputData) ?? [];
+        if (count($productsFromPriceList) < 1) {
+            echo '<div class="message failure">We are experiencing a problem to process your order. Sorry for the inconvenience</div>';
+            return false;
+        }
+
+        $orderItems = $order->getItems();
+        $updateProductList = [];
+        foreach ($orderItems as $orderItem) {
+            $index = 0;
+            while (isset($productsFromPriceList[$index])) {
+                if ($productsFromPriceList[$index]->id() === $orderItem->id()
+                    &&  $productsFromPriceList[$index]->deductBy($orderItem)) {
+                    $updateProductList[] = $productsFromPriceList[$index];
+                }
+                $index++;
+            }
+        }
+        //echo '<pre>';print_r($updateProductList); exit;
+
+        $oqBuilder = new OrderQueryBuilder();
+        $queries['order'] = $oqBuilder->modifyQueryMode('insert')->build();
+        $queries['item'] = $oqBuilder->modifyQueryMode('insert-item')->build();
+
+        $pqBuilder = (new ProductQueryBuilder());
+        $queries['product-update'] = $pqBuilder->modifyQueryMode('update')->build();
 
         /* transactions execution */
-        if ($this->processQueries($order, $queries)) {
+        if ($this->processQueries($order, $queries, $updateProductList)) {
             echo '<div class="message success">Order successfully stored</div>';
             return $order;
         }
@@ -78,12 +104,13 @@ class OrderStorageByPDO implements OrderStorage
         return $results;
     }
 
-    private function processQueries(Order $order, array $queries): bool
+    private function processQueries(Order $order, array $queries, array $updateProductList): bool
     {
         try {
             $this->pdoConnection->beginTransaction();
             $statements['order'] = $this->pdoConnection->prepare($queries['order']);
             $statements['items'] = $this->pdoConnection->prepare($queries['item']);
+            $statements['product-update'] = $this->pdoConnection->prepare($queries['product-update']);
             $parameters = [
                 'order_id' => $order->id(),
                 'total' => $order->total(),
@@ -91,7 +118,7 @@ class OrderStorageByPDO implements OrderStorage
             ];
             $statements['order']->execute($parameters);
 
-            /* processing each item */
+            /* processing each order item */
             foreach ($order->getItems() as $item) {
                 $parameters = [
                     'order_id' => $order->id(),
@@ -100,6 +127,18 @@ class OrderStorageByPDO implements OrderStorage
                     'price' => $item->price()
                 ];
                 $statements['items']->execute($parameters);
+            }
+
+            /* processing price list items */
+            foreach ($updateProductList as $product) {
+                $parameters = [
+                    'id' => $product->id(),
+                    'name' => $product->name(),
+                    'description' => $product->description(),
+                    'price' => $product->price(),
+                    'quantity' => $product->quantity()
+                ];
+                $statements['product-update']->execute($parameters);
             }
 
             $this->pdoConnection->commit();

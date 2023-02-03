@@ -4,8 +4,9 @@
 CRUD - Price List/Catalogue Products  - Implemented, not fully tested and fixed/refactored  
 CRUD - Cart/Basket Products           - Implemented, not fully tested and fixed/refactored  
 CR   - Orders / Carts (Checkout and listing history) - Implemented, not fully tested and fixed/refactored  
+Quantities management and persistence - Implemented 
 
-Quantities management and persistence to be implemented and final bug fixes, refactoring and logic separation remaining
+To be done and final bug fixes, refactoring and logic separation remaining
 
 ---
 ### Diary  

@@ -70,6 +70,15 @@ class Product extends ListableItem
         $this->quantity++;
     }
 
+    public function deductBy(Product $prod): int|false
+    {
+        if (($this->quantity - $prod->quantity()) > 0){
+            $this->quantity = $this->quantity - $prod->quantity();
+            return $this->quantity;
+        }
+        return false;
+    }
+
     public function render(): string|null
     {
         return (new ProductHtmlOutput($this))->toTableRowView();

@@ -4,14 +4,8 @@ namespace WebShoppingApp\Model;
 
 class ProductQueryBuilder
 {
-    protected Product $product;
     protected string $mode;
     private array $allowed = ['select', 'insert', 'update', 'delete'];
-
-    public function __construct(Product $product)
-    {
-        $this->product = $product;
-    }
 
     public function modifyQueryMode(string $mode): self
     {

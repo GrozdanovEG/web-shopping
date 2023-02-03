@@ -16,7 +16,7 @@ class HomeActionController implements ActionsController
 
     public function handle(InputData $inputData): array
     {
-        $priceListProducts = (new FetchProductsFromPriceListController())->handle($inputData) ?? [];
+        $productsFromPriceList = (new FetchProductsFromPriceListController())->handle($inputData) ?? [];
         /* @todo to be moved to View layer and separating logic
          * for managing price list and shopping functionality */
         $inputs = $inputData->getInputs();
@@ -26,13 +26,13 @@ class HomeActionController implements ActionsController
             require_once __DIR__ . '/../View/templates/add-product-form.html';
             // @todo To be replaced with HtmlOutput ...
             echo '<table>' . PHP_EOL;
-            foreach ($priceListProducts as $plp) echo $plp->render();
+            foreach ($productsFromPriceList as $plp) echo $plp->render();
             echo '</table>' . PHP_EOL;
         } elseif ($mode === 'shopping') {
             echo PHP_EOL . '<form action="/?mode=shopping" method="post">' . PHP_EOL ;
-            echo (new PriceListHtmlOutput($priceListProducts))->toListView();
+            echo (new PriceListHtmlOutput($productsFromPriceList))->toListView();
             echo '</form>'. PHP_EOL;
         }
-        return $priceListProducts;
+        return $productsFromPriceList;
     }
 }
