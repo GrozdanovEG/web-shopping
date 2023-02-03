@@ -16,7 +16,7 @@ class ListOrdersHistoryController implements ActionsController
 {
     public function canHandle(string $action): bool
     {
-        return ($action === 'list_orders' || $action === 'orders_history');
+        return ($action === 'list_orders' || $action === '');
     }
 
     /**
@@ -30,7 +30,7 @@ class ListOrdersHistoryController implements ActionsController
             $orderStorage = new OrderStorageByPDO(new Database($databaseData));
 
             if ($records = $orderStorage->fetchAll()) {
-                echo '<div class="message success">Order history successfully retrieved.</div>' . PHP_EOL;
+                echo '<div class="message success">Order history successfully loaded.</div>' . PHP_EOL;
             }
             $orders = [];
             foreach ($records as $record) {
@@ -51,7 +51,7 @@ class ListOrdersHistoryController implements ActionsController
             echo '<table>' . PHP_EOL . $rows . '</table>' . PHP_EOL ;
 
         } catch (Throwable $th) {
-            echo '<div class="message failure"> Oooops! Something unexpected happened. Try Again later!</div>';
+            echo '<div class="message failure">Oooops! Something unexpected happened. Try Again later!</div>';
             error_log($th->getMessage());
         }
         return [$records];

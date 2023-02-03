@@ -47,13 +47,12 @@ class OrderStorageByPDO implements OrderStorage
             $index = 0;
             while (isset($productsFromPriceList[$index])) {
                 if ($productsFromPriceList[$index]->id() === $orderItem->id()
-                    &&  $productsFromPriceList[$index]->deductBy($orderItem)) {
+                    &&  $productsFromPriceList[$index]->deductBy($orderItem) !== false) {
                     $updateProductList[] = $productsFromPriceList[$index];
                 }
                 $index++;
             }
         }
-        //echo '<pre>';print_r($updateProductList); exit;
 
         $oqBuilder = new OrderQueryBuilder();
         $queries['order'] = $oqBuilder->modifyQueryMode('insert')->build();

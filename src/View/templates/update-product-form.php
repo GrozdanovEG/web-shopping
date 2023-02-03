@@ -1,6 +1,6 @@
 
 
-<form action="/" method="post" name="product">
+<form action="/pricelist-management.php" method="post" name="product">
     <input type="hidden" name="id" value="<?= $product->id(); ?>">
     <label>Product Name:
         <input type="text" name="name" size="20" value="<?= $product->name(); ?>">

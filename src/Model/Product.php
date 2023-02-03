@@ -72,7 +72,7 @@ class Product extends ListableItem
 
     public function deductBy(Product $prod): int|false
     {
-        if (($this->quantity - $prod->quantity()) > 0){
+        if (($this->quantity - $prod->quantity()) >= 0){
             $this->quantity = $this->quantity - $prod->quantity();
             return $this->quantity;
         }

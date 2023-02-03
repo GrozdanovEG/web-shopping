@@ -22,17 +22,13 @@ class HomeActionController implements ActionsController
         $inputs = $inputData->getInputs();
         $mode = isset($inputs['mode']) ? $inputs['mode']->value() : '';
 
-        if ($mode === 'manage_price_list') {
+
             require_once __DIR__ . '/../View/templates/add-product-form.html';
             // @todo To be replaced with HtmlOutput ...
             echo '<table>' . PHP_EOL;
             foreach ($productsFromPriceList as $plp) echo $plp->render();
             echo '</table>' . PHP_EOL;
-        } elseif ($mode === 'shopping') {
-            echo PHP_EOL . '<form action="/?mode=shopping" method="post">' . PHP_EOL ;
-            echo (new PriceListHtmlOutput($productsFromPriceList))->toListView();
-            echo '</form>'. PHP_EOL;
-        }
+
         return $productsFromPriceList;
     }
 }
