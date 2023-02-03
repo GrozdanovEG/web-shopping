@@ -91,6 +91,7 @@ div {
     margin: auto;
 }
 #navigation ul {
+    width: 100%;
     text-align: center;
 }
 
@@ -100,6 +101,27 @@ div {
     text-align: center;
 }
 /* NAVIGATION ENDS */
+
+/* SUBMENU */
+ul.submenu {
+    list-style-type: none;
+    text-align: center;
+    width: 100%;
+}
+ul.submenu > li  {
+    float: left;
+    margin-left: 10%;
+}
+li > a {
+    text-decoration: none;
+}
+
+li > a:hover {
+    font-weight: 600;
+    font-style: oblique;
+    color: rgb(0,96,96);
+}
+/* SUBMENU ENDS */
 
 /* Table styles */
 table {

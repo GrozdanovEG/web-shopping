@@ -23,10 +23,10 @@ require_once __DIR__ . '/../src/View/templates/header.html';
 require_once __DIR__ . '/../src/View/templates/navigation.html';
 
 echo <<<SMALLMENU
-<div>
-   <a href="/shop.php?action=cart">see the cart</a> |
-   <a href="/shop.php?action=reset_cart">reset cart content</a> |
-</div>
+<ul class="submenu">
+   <li><a href="/shop.php?action=cart">see the cart</a></li>
+   <li><a href="/shop.php?action=reset_cart">reset cart content</a></li>
+</ul>
 SMALLMENU;
 
 (new Application($controllerManager))->run($userInput);

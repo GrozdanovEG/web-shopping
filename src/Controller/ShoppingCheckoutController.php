@@ -36,7 +36,7 @@ class ShoppingCheckoutController implements ActionsController
             $total += $itemTotal;
         }
         $finishShopping =<<<FINISH
-            <form action="/?" method="post">
+            <form action="/shop.php?" method="post">
                 <button type="submit" name="action" name="action" value="finish_checkout">Complete the order</button>
             </form>
         FINISH;

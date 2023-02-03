@@ -20,7 +20,7 @@ class ListCartContentController implements ActionsController
             return [];
         }
         $products = ($sessionManager->cart)->fetchAll();
-        echo   PHP_EOL . '<form method="post" action="/?">'. PHP_EOL .
+        echo   PHP_EOL . '<form method="post" action="/shop.php?">'. PHP_EOL .
               (new CartHtmlOutput($products))->toTableView();
         echo '<button type="submit" name="action" value="update_cart">Update cart</button>'.PHP_EOL;
         echo '<button type="submit" name="action" value="checkout">Proceed to checkout</button>'.PHP_EOL;
