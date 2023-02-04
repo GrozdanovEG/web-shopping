@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 namespace WebShoppingApp\Storage;
-use WebShoppingApp\Storage\StorageData;
 
 class DatabaseData
 {

@@ -25,6 +25,7 @@ class Database extends Storage implements Connectable {
         }
     }
 
+    // @todo to be implemented
     public function query(string $query): bool
     {
         try {

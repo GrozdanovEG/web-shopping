@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 namespace WebShoppingApp\Controller;
-//use WebShoppingApp\DataFlow\UserInput;
 use WebShoppingApp\DataFlow\InputData;
 
 final class ControllerManager

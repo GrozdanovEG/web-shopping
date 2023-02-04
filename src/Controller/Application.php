@@ -3,7 +3,6 @@ declare(strict_types=1);
 namespace WebShoppingApp\Controller;
 
 use WebShoppingApp\DataFlow\InputData;
-use WebShoppingApp\DataFlow\UserInput;
 
 class Application
 {
@@ -16,7 +15,7 @@ class Application
     {
         try {
             $output = $this->cm->handle($inputData);
-        } catch (Exception $e) {
+        } catch (Error $e) {
             echo '<div class="message error">Application error occurred! Sorry for the inconvenience!</div>';
             error_log("File: {$e->getFile()} ; Line: {$e->getLine()}: Message:  {$e->getMessage()}");
         } catch (Throwable $th) {

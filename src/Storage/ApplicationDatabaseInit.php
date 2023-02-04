@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+namespace WebShoppingApp\Storage;
 
 class ApplicationDatabaseInit {
 
@@ -11,7 +13,7 @@ class ApplicationDatabaseInit {
             return true;
         } catch (\Exception $exception) {
             echo "Cannot execute the query<br>";
-            echo "<div>{$exception->getMessage()}</div>";
+            echo "<div class='message failure'>{$exception->getMessage()}</div>";
             return false;
         }
     }

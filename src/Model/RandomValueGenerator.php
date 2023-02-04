@@ -33,8 +33,8 @@ class RandomValueGenerator
         while($max > strlen($chars) &&
               strlen($chars) <= $this->stringSizeLimit) $chars .= $chars;
 
-        $maxSizeAllowed = strlen($chars);
-        if ($max > $maxSizeAllowed) $max = $maxSizeAllowed;
+        //$maxSizeAllowed = strlen($chars);
+        //if ($max > $maxSizeAllowed) $max = $maxSizeAllowed;
         $min = max($min, 0);
 
         return substr(str_shuffle($chars), 0, rand($min, $max));
