@@ -1,11 +1,12 @@
 <?php
-
+declare(strict_types=1);
 namespace WebShoppingApp\Model;
 
 class RandomValueGenerator
 {
      private string $digits = '0123456789';
      private string $alphaLetters = 'ABCDEFGHEJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+     private int $stringSizeLimit = 512;
 
     public function number(int $min = 10, int $max = 10): string
     {
@@ -27,9 +28,15 @@ class RandomValueGenerator
 
     private function generate(string $chars, int $min, int $max): string
     {
+        /* @todo handling scenario with user input where $min > $max
+         * consulting with https://www.php.net/manual/en/function.rand.php */
+        while($max > strlen($chars) &&
+              strlen($chars) <= $this->stringSizeLimit) $chars .= $chars;
+
         $maxSizeAllowed = strlen($chars);
         if ($max > $maxSizeAllowed) $max = $maxSizeAllowed;
         $min = max($min, 0);
+
         return substr(str_shuffle($chars), 0, rand($min, $max));
     }
 
