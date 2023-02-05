@@ -17,13 +17,11 @@ final class StorageData
     {
         if (isset($dbData))
         $this->dbData = $dbData;
+        //$this->dbData = ['host' => 'localhost', 'username' => 'testdrop','password' => '123','databaseName' => 'testdrop'];
     }
 
     public function dbData(): array
     {
         return $this->dbData;
     }
-
-
-
 }

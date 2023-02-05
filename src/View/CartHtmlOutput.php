@@ -43,12 +43,16 @@ class CartHtmlOutput
                             <td>&dollar;{$li->price()}</td>
                             <td><input type="number" name="{$li->id()}" value="{$li->quantity()}"></td>
                             <td>Total: &dollar;{$itemTotal}</td>
-                        </tr>
+                            <td>
+                                <button type="submit" name="action" value="remove_from_cart">Remove</button>
+                            </td>
+                        </tr> 
+
                     ROW;
             $total += $itemTotal;
         }
-        $rows .=  '<tr><td colspan="4">Cart total: &dollar;'.$total.'</td></tr>';
-        return '<table>' . PHP_EOL . $rows. PHP_EOL . '</table>' . PHP_EOL;
+        $rows .=  '<tr><td colspan="5">Cart total: &dollar;'.$total.'</td></tr>' . PHP_EOL;
+        return '<table>' . $rows. PHP_EOL . '</table>' . PHP_EOL;
     }
 
 }

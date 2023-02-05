@@ -7,6 +7,7 @@ use WebShoppingApp\Controller\ListCartContentController;
 use WebShoppingApp\Controller\AddProductToCartController;
 use WebShoppingApp\Controller\ResetCartContentController;
 use WebShoppingApp\Controller\UpdateCartContentController;
+use WebShoppingApp\Controller\RemoveProductFromCartController;
 use WebShoppingApp\Controller\ShoppingCheckoutController;
 use WebShoppingApp\Controller\FinishCheckoutController;
 
@@ -16,6 +17,7 @@ $controllerManager
     ->add(new AddProductToCartController())
     ->add(new ResetCartContentController())
     ->add(new UpdateCartContentController())
+    ->add(new RemoveProductFromCartController())
     ->add(new ShoppingCheckoutController())
     ->add(new FinishCheckoutController());
 
