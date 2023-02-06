@@ -63,7 +63,7 @@ class OrderStorageByPDO implements OrderStorage
 
         /* transactions execution */
         if ($this->processQueries($order, $queries, $updateProductList)) {
-            echo '<div class="message success">Order successfully stored</div>';
+            echo '<div class="message success">The operation was successful</div>';
             return $order;
         }
         return false;
@@ -148,6 +148,4 @@ class OrderStorageByPDO implements OrderStorage
             return false;
         }
     }
-
-
 }

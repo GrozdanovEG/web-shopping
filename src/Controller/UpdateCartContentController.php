@@ -21,11 +21,9 @@ class UpdateCartContentController implements ActionsController
                 $sessionManager->cart = new Cart();
 
         $cartList = ($sessionManager->cart)->fetchAll();
-
         $sessionManager->cart = $this->updateCartContent($cartList, $priceListProducts, $inputData);
 
-        echo '<div class="message info">You cart was updated</div>';
-
+        echo '<div class="message success">You cart was updated</div>';
         return [$sessionManager->cart->fetchAll()];
     }
 
@@ -35,6 +33,7 @@ class UpdateCartContentController implements ActionsController
         $max = count($cartList);
         $userInputList = $inputData->getInputs();
         $cartUpdated = new Cart();
+
         for ($i = 0; $i < $max; $i++) {
             $cartProduct = $cartList[$i];
             $userInputQuantity = (int)$userInputList[$cartProduct->id()]?->value();

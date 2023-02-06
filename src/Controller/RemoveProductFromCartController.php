@@ -21,22 +21,22 @@ class RemoveProductFromCartController implements ActionsController
             $sessionManager->cart = new Cart();
 
         $cartList = ($sessionManager->cart)->fetchAll();
-
-        //
-        echo '<pre>';
-        var_dump($inputData);
-
-        exit;
-        $productToRemove = new ProductFactory();
+        // echo '<pre>';var_dump($inputData); exit;
+        $itemToRemoveById = $inputData->getInputs()['handle_by_id']->value();
         $cartUpdated = new Cart();
+        $removedItem = null;
         foreach ($cartList as $item) {
-            if ($item->id() === $productToRemove->id()) continue;
+            if ($item->id() === $itemToRemoveById) {
+                $removedItem = $item;
+                continue;
+            }
             $cartUpdated->addProduct($item);
         }
-
         $sessionManager->cart = $cartUpdated;
-        echo '<div class="message info">Product '.' has been removed from your cart.</div>';
-        echo '<div class="message info">RemoveProductFromCartController invoked</div>';
-        return[];
+
+        if ($removedItem !== null)
+        echo '<div class="message success">Product "'. $removedItem->name() .'" has been removed from your cart.</div>';
+
+        return[$removedItem];
     }
 }

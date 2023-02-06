@@ -34,7 +34,7 @@ class FinishCheckoutController implements ActionsController
         $databaseData = new DatabaseData((new StorageData())->dbData());
         $orderStorage = new OrderStorageByPDO(new Database($databaseData));
         if ($orderStorage->store($order, $inputData)) {
-            echo '<div class="message success">The cart  was successfully stored in your order list </div>';
+            echo '<div class="message success">The cart was successfully stored in your order list </div>';
             $sessionManager->clear();
         }
         return [$cartList];

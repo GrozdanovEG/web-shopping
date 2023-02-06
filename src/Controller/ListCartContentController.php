@@ -16,16 +16,21 @@ class ListCartContentController implements ActionsController
     {
         if (! isset($sessionManager)) $sessionManager = new SessionsManager();
         if ( $sessionManager->isRunning() && (! $sessionManager->cart) ) {
-            echo '<div class="message info">Cart is empty or there is an error with processing of your request.</div>';
+            echo '<div class="message info">It seems you cart is empty or there is a problem with processing of your request.</div>';
             return [];
         }
         $products = ($sessionManager->cart)->fetchAll();
-        echo   PHP_EOL . '<form method="post" action="/shop.php?">'. PHP_EOL .
-              (new CartHtmlOutput($products))->toTableView();
-        echo '<input type="hidden" name="remove_by_id" value="default" />'. PHP_EOL;
-        echo '<button type="submit" name="action" value="update_cart">Update cart</button>'.PHP_EOL;
-        echo '<button type="submit" name="action" value="checkout">Proceed to checkout</button>'.PHP_EOL;
-        echo '</form>';
+        echo   PHP_EOL . '<form method="post" action="/shop.php?" id="cart_form">'.
+               PHP_EOL . (new CartHtmlOutput($products))->toTableView() . PHP_EOL;
+
+        echo <<<EXTRAFIELDS
+            <input type="hidden" id="handle_by_id" name="handle_by_id" value="none" />
+            <button type="submit" name="action" value="update_cart">Update cart</button>
+            <button type="submit" name="action" value="checkout">Proceed to checkout</button>
+        EXTRAFIELDS;
+
+        echo '</form>'.PHP_EOL;
+
         return [$products];
     }
 }

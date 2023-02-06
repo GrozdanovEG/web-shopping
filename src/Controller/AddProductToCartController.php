@@ -43,7 +43,7 @@ class AddProductToCartController implements ActionsController
         }
         if (! $found) ($sessionManager->cart)->addProduct($product);
 
-        echo "<div class=\"message info\">{$product->name()} added to the cart!</div>";
-        return ['id' => $product->id()];
+        echo "<div class=\"message success\">{$product->name()} added to the cart!</div>";
+        return [$product];
     }
 }
