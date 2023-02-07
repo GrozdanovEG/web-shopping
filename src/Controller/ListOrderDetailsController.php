@@ -51,7 +51,6 @@ class ListOrderDetailsController implements ActionsController
             echo '<div class="message failure">Oooops! Something unexpected happened. Try Again later!</div>';
             error_log($th->getMessage());
         }
-        return [$records];
-
+        return $records;
     }
 }

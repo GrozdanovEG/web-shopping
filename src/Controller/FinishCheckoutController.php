@@ -37,6 +37,6 @@ class FinishCheckoutController implements ActionsController
             echo '<div class="message success">The cart was successfully stored in your order list </div>';
             $sessionManager->clear();
         }
-        return [$cartList];
+        return $cartList;
     }
 }

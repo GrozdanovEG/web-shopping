@@ -21,6 +21,7 @@ class ListCartContentController implements ActionsController
         }
         $products = ($sessionManager->cart)->fetchAll();
         echo   PHP_EOL . '<form method="post" action="/shop.php?" id="cart_form">'.
+               PHP_EOL . '<h4>Your Cart Content</h4>' .
                PHP_EOL . (new CartHtmlOutput($products))->toTableView() . PHP_EOL;
 
         echo <<<EXTRAFIELDS
