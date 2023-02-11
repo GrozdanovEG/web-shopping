@@ -16,20 +16,21 @@ class OrderHtmlOutput extends HtmlOutput
             </tr>
         ROW;
     }
+
     public function toTableView(): string
     {
         $items = $this->entity()->getItems();
         $rows = '';
         foreach ($items as $item) {
             $itemTotal = $item->quantity() * $item->price();
-            $rows .=<<<ITEMROW
-                    <tr>
-                        <td>{$item->name()}</td>
-                        <td>&dollar;{$item->price()}</td>
-                        <td>{$item->quantity()}</td>
-                        <td>&dollar;{$itemTotal}</td>
-                    </tr>
-                    ITEMROW;
+            $rows .= <<<ITEMROW
+                <tr>
+                    <td>{$item->name()}</td>
+                    <td>&dollar;{$item->price()}</td>
+                    <td>{$item->quantity()}</td>
+                    <td>&dollar;{$itemTotal}</td>
+                </tr>
+                ITEMROW;
         }
         $caption = '<caption>Total: $'.$this->entity()->total().
                    ' , Completed at: '. $this->entity()->completedAt()->format('Y-m-d H:i'). '</caption>';

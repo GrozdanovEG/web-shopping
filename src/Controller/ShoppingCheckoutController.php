@@ -35,9 +35,10 @@ class ShoppingCheckoutController implements ActionsController
             ITEM;
             $total += $itemTotal;
         }
+        $checkoutButtonDisabledString = ($total === 0.0)? ' disabled="disabled"' : '';
         $finishShopping =<<<FINISH
             <form action="/shop.php?" method="post">
-                <button type="submit" name="action" name="action" value="finish_checkout">Complete the order</button>
+                <button type="submit" name="action" name="action" value="finish_checkout"{$checkoutButtonDisabledString}>Complete the order</button>
             </form>
         FINISH;
         echo '<tr><td colspan="4">Cart total: &dollar;'.$total.'&nbsp;'.$finishShopping.' </td></tr>';

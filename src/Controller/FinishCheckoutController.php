@@ -24,19 +24,23 @@ class FinishCheckoutController implements ActionsController
             $sessionManager->cart = new Cart();
 
         $cartList = ($sessionManager->cart)->fetchAll();
+        $processingAllowed = (count($cartList) > 0);
 
-        $order = OrderFactory::createFromCartData($sessionManager->cart);
+        if ($processingAllowed) {
+            $order = OrderFactory::createFromCartData($sessionManager->cart);
+            foreach ($cartList as $cartItem) {
+                $order->addItem($cartItem);
+            }
 
-        foreach ($cartList as $cartItem) {
-            $order->addItem($cartItem);
-        }
-
-        $databaseData = new DatabaseData((new StorageData())->dbData());
-        $orderStorage = new OrderStorageByPDO(new Database($databaseData));
-        if ($orderStorage->store($order, $inputData)) {
-            echo '<div class="message success">The cart was successfully stored in your order list </div>';
-            $sessionManager->clear();
-        }
+            $databaseData = new DatabaseData((new StorageData())->dbData());
+            $orderStorage = new OrderStorageByPDO(new Database($databaseData));
+            if ($orderStorage->store($order, $inputData)) {
+                echo '<div class="message success">The cart was successfully stored in your order list </div>';
+                $sessionManager->clear(); /* might be removed depending on the business logic */
+                $sessionManager->cart = new Cart();
+            }
+        }   else
+            echo '<div class="message warning">Your cart seems to be empty. Nothing to store.</div>';
         return $cartList;
     }
 }

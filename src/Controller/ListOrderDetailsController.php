@@ -14,12 +14,10 @@ use WebShoppingApp\View\OrderHtmlOutput;
 
 class ListOrderDetailsController implements ActionsController
 {
-
     public function canHandle(string $action): bool
     {
         return ($action === 'order_details');
     }
-
 
     public function handle(InputData $inputData): array
     {

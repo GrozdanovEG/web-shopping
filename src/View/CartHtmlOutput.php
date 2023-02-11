@@ -34,7 +34,12 @@ class CartHtmlOutput
         $listableItems = $this->entities ?? [];
         $rows = '';
         $total = 0.0;
-        foreach ($listableItems as $li) {
+        if (count($listableItems) < 1) {
+            $rows .= '<tr><td>Your cart is empty</td></tr>'.PHP_EOL;
+        }
+        else
+            /* @todo might be replaced with more productive data structure from SPL */
+            while ($li = array_shift($listableItems)) {
             $itemTotal = ($li->quantity() * $li->price());
             $productStatus = $li->quantity() ? 'incart' : 'removed';
             $rows .= <<<ROW
@@ -46,13 +51,12 @@ class CartHtmlOutput
                             <td>
                                 <button type="submit" name="action" value="remove_from_cart">Remove</button>
                             </td>
-                        </tr> 
-
+                        </tr> \n\r
                     ROW;
             $total += $itemTotal;
         }
         $rows .=  '<tr><td colspan="5">Cart total: &dollar;'.$total.'</td></tr>' . PHP_EOL;
-        return '<table>' . $rows. PHP_EOL . '</table>' . PHP_EOL;
+        return '<table>' . PHP_EOL . $rows. PHP_EOL . '</table>' . PHP_EOL;
     }
 
 }
