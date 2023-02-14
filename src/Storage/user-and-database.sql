@@ -11,14 +11,8 @@ CREATE USER IF NOT EXISTS m3webshopping@localhost
 GRANT ALL PRIVILEGES ON m3webshopping.*
     TO 'm3webshopping'@'localhost'
     IDENTIFIED BY 'wshm3';
-
-/*
-GRANT CREATE ON *.*
+    
+GRANT SELECT ON mysql.*
     TO 'm3webshopping'@'localhost'
     IDENTIFIED BY 'wshm3';
 
-
-        elhostadmin : elAdmin22
-DROP USER IF EXISTS m3webshopping ;
-DROP DATABASE IF EXISTS m3webshopping ;
- */

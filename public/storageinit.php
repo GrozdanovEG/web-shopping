@@ -1,3 +1,15 @@
+<?php
+$EXEC_ENABLED = false;
+/* !!! It is strongly recommended to be set as 'false' after DB instantiation
+ *     to lock the possibility to be executed by someone else if the application remain
+ *     running on publicly accessible server.
+ */
+$EXEC_ENABLED = true; // Comment this line after finishing the db initialization
+
+require_once __DIR__ . '/../vendor/autoload.php';
+use WebShoppingApp\Storage\{StorageData,DatabaseData,Database};
+use WebShoppingApp\Storage\ApplicationDatabaseInit;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +57,7 @@
             <li>
                 <p>
                     You have the options to create the new units (database, tables) if they don't exist, or to recreate them
-                    even if they exist. Bear in mind the second option will clear all the data stored in the units before
+                    even if they exist. Bear in mind the second option will erase all the data stored in the units before
                     their recreation.
                 </p>
             </li>
@@ -56,33 +68,30 @@
                     must be allowed to create new users, databases and also grant option.<br>
                     For example if you have a configured MySQL DBMS with user '<em>admin</em>' (with sufficient rights) and password '<em>azerty</em>', enter
                     this data in the input fields of the form and click on the appropriate button!
+                    You are going to see a button only for the operations that are detected as possible to be executed.
                 </p>
             </li>
         </ol>
     </div>
     <div>
 <?php
-$EXEC_ENABLED = false;
-/* !!! It is strongly recommended to be replaced with 'false' after DB instantiation
- *     to lock the possibility to be executed by someone else if the application remain
- *     running on publicly accessible server
- */
-$EXEC_ENABLED = true; // Comment this line after finishing the db initialization
-
-require_once __DIR__ . '/../vendor/autoload.php';
-use WebShoppingApp\Storage\{StorageData,DatabaseData,Database};
-use WebShoppingApp\Storage\ApplicationDatabaseInit;
 $defaultDbDataObj = new DatabaseData((new StorageData())->dbData());
 
 [$mode, $accessLevel, $dbDataObj] = findModeAndDatabaseData();
 $pdo = getPdoConnection($dbDataObj);
-$recreationPossible = false;
 
-if ($pdo && $accessLevel === 'admin') {
+$databaseExists = null;
+$usernameExists = null;
+$recreationPossible = false;
+try {
     $databaseExists = databaseExists($defaultDbDataObj->databaseName(), $pdo);
     $usernameExists = usernameExists($defaultDbDataObj->username(), $pdo);
-    $recreationPossible = $databaseExists || $usernameExists;
+} catch (Throwable $th) {
+    echo '<div class="message failure">Uneble to check if the database name and username already exist! </div>'.PHP_EOL;
+    error_log($th->getMessage());
 }
+
+$recreationPossible = ($pdo && $accessLevel === 'admin');
 
 if ( $EXEC_ENABLED ) {
     try {
@@ -100,26 +109,28 @@ if ( $EXEC_ENABLED ) {
         </p>
         <form action="?" method="post">
             <label>DB Hostname:
-                <input type="text" size="10" name="hostname" value="localhost" />
+                <input type="text" size="10" name="hostname" value="localhost" placeholder="database hostname" />
             </label>
             <br/>
             <label>DB Username:
-                <input type="text" size="10" name="username" />
+                <input type="text" size="10" name="username"  placeholder="root or another admin user" />
             </label>
             <br/>
             <label>DB Password:
-                <input type="password" size="10" name="password" />
+                <input type="password" size="10" name="password" placeholder="account password here" />
             </label>
             <br>
             <input type="hidden" name="access_level" value="admin" />
-            <button type="submit" name="action" value="create_database">Create database and user with admin privileges</button>
-            <?php if($recreationPossible): ?>
-            <button type="submit" name="action" value="recreate_database">Recreate database and user with admin privileges</button>
+            <?php if (! $databaseExists): ?>
+                <button type="submit" name="action" value="create_database">Create database and user with admin privileges</button>
+            <?php endif; ?>
+            <?php if($databaseExists || $usernameExists ): ?>
+                 <button type="submit" name="action" value="recreate_database">Recreate database and user with admin privileges</button>
             <?php endif; ?>
             <br>
-            <button type="submit" name="action" value="create_tables">Create tables with admin privileges</button>
-            <?php if($recreationPossible): ?>
-            <button type="submit" name="action" value="recreate_tables">Recreate tables with admin privileges</button>
+            <?php if ($databaseExists): ?>
+                 <button type="submit" name="action" value="create_tables">Create tables with admin privileges</button>
+                 <button type="submit" name="action" value="recreate_tables">Recreate tables with admin privileges</button>
             <?php endif; ?>
         </form>
     </div>
@@ -129,9 +140,9 @@ if ( $EXEC_ENABLED ) {
         </p>
         <form action="?" method="post">
             <input type="hidden" name="access_level" value="user" />
-            <button type="submit" name="action" value="create_tables">Create tables with user privileges</button>
-            <?php if($recreationPossible): ?>
-            <button type="submit" name="action" value="recreate_tables">Recreate tables with user privileges</button>
+            <?php if ($databaseExists && $usernameExists): ?>
+                 <button type="submit" name="action" value="create_tables">Create tables with user privileges</button>
+                 <button type="submit" name="action" value="recreate_tables">Recreate tables with user privileges</button>
             <?php endif; ?>
         </form>
     </div>
@@ -146,6 +157,7 @@ function handleDbStorageCreation(string $mode, PDO $pdo): void
 
     case 'create_tables':
         ApplicationDatabaseInit::createTables($pdo);
+        break;
 
     case 'recreate_tables':
         $databaseUnitsDropper = new DatabaseUnitsDropper(new DropQueryFacilitator($defaultDbDataObj));
@@ -169,6 +181,7 @@ function handleDbStorageCreation(string $mode, PDO $pdo): void
     }
 }
 
+/* @todo further might be orgainized inside  a class */
 function usernameExists(string $username, PDO $pdo): bool
 {
     $userRecordsFound = [];
@@ -207,6 +220,7 @@ function getPdoConnection(DatabaseData $dbDataObj): PDO|false
     return $pdo;
 }
 
+/* @todo further might be orgainized inside  a class */
 function findModeAndDatabaseData(): array {
     $dbDataArray = (new StorageData())->dbData();
     $POST_FILTERED = ['action' => ''];
@@ -224,7 +238,11 @@ function findModeAndDatabaseData(): array {
             $POST_FILTERED['action'] === 'recreate_database') $dbDataArray['databaseName'] = '';
         else $dbDataArray['databaseName'] = $dbDataObj->databaseName();
     }
-    return [$POST_FILTERED['action'], $POST_FILTERED['access_level'], (new DatabaseData($dbDataArray))];
+    return [
+            $POST_FILTERED['action'],
+            ($POST_FILTERED['access_level'] ?? 'user'),
+            (new DatabaseData($dbDataArray))
+          ];
 }
 
 class DropQueryFacilitator

@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS order_items(
     quantity INTEGER(4),
     price FLOAT(2),
     visibility INT(1) DEFAULT 1,
+    PRIMARY KEY (order_id, product_id),
     FOREIGN KEY (order_id) REFERENCES orders(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
