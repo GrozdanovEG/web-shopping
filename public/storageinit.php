@@ -87,11 +87,12 @@ try {
     $databaseExists = databaseExists($defaultDbDataObj->databaseName(), $pdo);
     $usernameExists = usernameExists($defaultDbDataObj->username(), $pdo);
 } catch (Throwable $th) {
-    echo '<div class="message failure">Uneble to check if the database name and username already exist! </div>'.PHP_EOL;
+    echo '<div class="message failure">Unable to verify the database name and username existence! </div>'.PHP_EOL;
     error_log($th->getMessage());
 }
 
-$recreationPossible = ($pdo && $accessLevel === 'admin');
+$isAdmin = ($accessLevel === 'admin');
+$recreationPossible = ($pdo && $isAdmin);
 
 if ( $EXEC_ENABLED ) {
     try {
@@ -113,11 +114,11 @@ if ( $EXEC_ENABLED ) {
             </label>
             <br/>
             <label>DB Username:
-                <input type="text" size="10" name="username"  placeholder="root or another admin user" />
+                <input type="text" size="10" name="username" value="<?= ($isAdmin ? $dbDataObj->username() : '') ?>" placeholder="root or another admin user" />
             </label>
             <br/>
             <label>DB Password:
-                <input type="password" size="10" name="password" placeholder="account password here" />
+                <input type="password" size="10" name="password" value="<?= ($isAdmin ? $dbDataObj->password() : '') ?>" placeholder="account password here" />
             </label>
             <br>
             <input type="hidden" name="access_level" value="admin" />
@@ -198,8 +199,8 @@ function databaseExists(string $dbName, PDO $pdo): bool
 {
     $databasesRecordsFound = [];
     try {
-    $stmt = $pdo->query("SHOW DATABASES");
-    $databasesRecordsFound = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        $stmt = $pdo->query("SHOW DATABASES");
+        $databasesRecordsFound = $stmt->fetchAll(PDO::FETCH_COLUMN);
     } catch(Throwable $th) {
         error_log('['.$th->getFile(). ':'. $th->getLine(). ']' .$th->getMessage() . PHP_EOL . $th->getTraceAsString());
     }
